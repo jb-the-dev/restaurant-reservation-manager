@@ -37,11 +37,19 @@ async function hasOnlyValidProperties(req, res, next){
 
   if (invalidFields.length) {
     return next({
-      status: 400, message: `Invalid field(s): ${invalidFields.join(", ")}`
+      status: 400, 
+      message: `Invalid field(s): ${invalidFields.join(", ")}`
     });
   }
   next();
 }
+
+/**
+ * Specific validator to check reservation_date is a date
+ */
+// async function isValidDate(req, res, next) {
+
+// }
 
 
 // HANDLERS
@@ -55,13 +63,34 @@ async function list(req, res) {
   });
 }
 
-async function read(req, res) {
+function read(req, res) {
   res.json({
     data: res.locals.reservation
   })
 }
 
+async function create(req, res) {
+  const newReservation = await service.create(req.body.data)
+
+  res.status(201).json({ data: newReservation })
+
+
+
+
+  // const { data: {first_name, last_name, mobile_number, reservation_date, reservation_time, people} = {} } = req.body;
+  // const newReservation = {
+  //   first_name,
+  //   last_name,
+  //   mobile_number,
+  //   reservation_date,
+  //   reservation_time,
+  //   people
+  // }
+  
+}
+
 module.exports = {
   list,
-  read: [reservationExists, read]
+  read: [reservationExists, read],
+  create: [hasOnlyValidProperties, create]
 };
