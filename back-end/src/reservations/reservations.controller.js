@@ -1,5 +1,6 @@
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const service = require("./reservations.service");
+const { DateTime } = require("luxon");
 
 //TODO build validation for valid properties
 //TODO build specific validator for reservation_date, reservation_time, and people
@@ -73,12 +74,47 @@ async function hasRequiredProperties(req, res, next) {
  */
 async function isValidDate(req, res, next) {
   const { data = {} } = req.body;
-  let date = data["reservation_date"]
+  let dateResult = DateTime.fromISO(data["reservation_date"]);
 
-  let result = Date.parse(date)
-  console.log("date", data["reservation_date"], "time", data["reservation_time"], "people", data["people"])
-  console.log("result", result)
+  if (!dateResult.isValid) {
+    return next({
+      status: 400,
+      message: `The date inputted is not valid reservation_date.`,
+    });
+  }
+  next();
 }
+
+/**
+ * Specific validator to check reservation_time is a time
+ */
+async function isValidTime(req, res, next) {
+  const { data = {} } = req.body;
+  let timeResult = DateTime.fromISO(data["reservation_time"]);
+
+  if (!timeResult.isValid) {
+    return next({
+      status: 400,
+      message: `The time inputted is not a valid reservation_time.`,
+    });
+  }
+  next();
+}
+
+/**
+ * Specific validator to check reservation_time is a time
+ */
+ async function isValidPeopleProp(req, res, next) {
+  const { data = {} } = req.body;
+
+  if ( typeof data["people"] !== "number" ) {
+    return next({
+      status: 400,
+      message: "Data in 'people' must be a number."
+    })
+  }
+  next();
+ }
 
 // HANDLERS
 
@@ -98,8 +134,8 @@ function read(req, res) {
 }
 
 async function create(req, res) {
-  await service.create(req.body.data);
-  res.sendStatus(201);
+  let newReservation = await service.create(req.body.data);
+  res.status(201).json({ data: newReservation});
 }
 
 module.exports = {
@@ -109,6 +145,8 @@ module.exports = {
     asyncErrorBoundary(hasOnlyValidProperties),
     asyncErrorBoundary(hasRequiredProperties),
     asyncErrorBoundary(isValidDate),
+    asyncErrorBoundary(isValidTime),
+    asyncErrorBoundary(isValidPeopleProp),
     asyncErrorBoundary(create),
   ],
 };
