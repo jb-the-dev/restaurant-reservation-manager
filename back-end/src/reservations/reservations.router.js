@@ -4,8 +4,6 @@
  * @type {Router}
  */
 
-//TODO return only reservations matching date query param
-
 const router = require("express").Router();
 const controller = require("./reservations.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed");

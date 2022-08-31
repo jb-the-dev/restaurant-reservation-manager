@@ -2,9 +2,6 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const service = require("./reservations.service");
 const { DateTime } = require("luxon");
 
-//DONE build validation for valid properties
-//DONE build specific validator for reservation_date, reservation_time, and people
-
 // VALIDATORS
 
 /**
