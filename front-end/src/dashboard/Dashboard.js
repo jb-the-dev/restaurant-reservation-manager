@@ -17,7 +17,7 @@ function Dashboard({ date }) {
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
-    listReservations({ date }, abortController.signal)
+    listReservations({ date }, abortController.signal) //takes "date" from `today()` in date-time.js
       .then(setReservations)
       .catch(setReservationsError);
     return () => abortController.abort();

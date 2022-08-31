@@ -1,12 +1,10 @@
-import { useState } from "react";
 // import ErrorAlert from "./ErrorAlert";
 
-export default function ReservationForm() {
-  const [formData, setFormData] = useState({});
+export default function ReservationForm({handleSubmit}) {
 
   return (
     <>
-      <form className="card">
+      <form className="card" onSubmit={handleSubmit}>
         <label htmlFor="first_name" className="form-label">
           First Name
         </label>
@@ -37,11 +35,12 @@ export default function ReservationForm() {
         <input 
             id="mobile_number" 
             name="mobile_number" 
-            type="text" 
-            className="form-control" 
+            type="tel" 
+            className="form-control"
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
             // value={} 
             // onChange={} 
-            placeholder="" 
+            placeholder="123-456-7890" 
             required />        
         <label htmlFor="reservation_date" className="form-label">
           Reservation Date
@@ -49,7 +48,7 @@ export default function ReservationForm() {
         <input 
             id="reservation_date" 
             name="reservation_date" 
-            type="text" 
+            type="date" 
             className="form-control" 
             // value={} 
             // onChange={} 
@@ -61,7 +60,7 @@ export default function ReservationForm() {
         <input 
             id="reservation_time" 
             name="reservation_time" 
-            type="text" 
+            type="time" 
             className="form-control" 
             // value={} 
             // onChange={} 
@@ -73,10 +72,12 @@ export default function ReservationForm() {
         <input 
             id="people" 
             name="people" 
-            type="text" 
+            type="number" 
             className="form-control" 
             // value={} 
-            // onChange={} 
+            // onChange={}
+            maxLength={2} 
+            min={1}
             placeholder="" 
             required />        
         <button type="submit" className="btn btn-primary">Submit</button>
