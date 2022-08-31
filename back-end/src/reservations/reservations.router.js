@@ -4,18 +4,17 @@
  * @type {Router}
  */
 
-//TODO add methodNotAllowed
 //TODO return only reservations matching date query param
 
 const router = require("express").Router();
-const methodNotAllowed = require("../errors/methodNotAllowed");
 const controller = require("./reservations.controller");
+const methodNotAllowed = require("../errors/methodNotAllowed");
 
 router.route("/")
     .get(controller.list)
+    .get(controller.listByDate)
     .post(controller.create)
     .all(methodNotAllowed)
-    
 
 router.route("/:reservation_id")
     .get(controller.read)

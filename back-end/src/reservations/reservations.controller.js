@@ -2,8 +2,8 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const service = require("./reservations.service");
 const { DateTime } = require("luxon");
 
-//TODO build validation for valid properties
-//TODO build specific validator for reservation_date, reservation_time, and people
+//DONE build validation for valid properties
+//DONE build specific validator for reservation_date, reservation_time, and people
 
 // VALIDATORS
 
@@ -121,7 +121,8 @@ async function isValidTime(req, res, next) {
 /**
  * List handler for reservation resources
  */
-async function list(req, res) {
+async function list(req, res, next) {
+  if (req.query) return next();
   res.json({
     data: await service.list(),
   });
@@ -138,8 +139,13 @@ async function create(req, res) {
   res.status(201).json({ data: newReservation});
 }
 
+async function listByDate(req, res, next) {
+  let date = req.query.date
+  res.json({ data: await service.listByDate(date) })
+}
+
 module.exports = {
-  list,
+  list:  asyncErrorBoundary(list),
   read: [asyncErrorBoundary(reservationExists), read],
   create: [
     asyncErrorBoundary(hasOnlyValidProperties),
@@ -149,4 +155,5 @@ module.exports = {
     asyncErrorBoundary(isValidPeopleProp),
     asyncErrorBoundary(create),
   ],
+  listByDate: asyncErrorBoundary(listByDate),
 };

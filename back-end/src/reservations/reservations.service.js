@@ -18,8 +18,16 @@ function create(reservation){
         .then(createdRecords => createdRecords[0])
 }
 
+function listByDate(date){
+    return knex("reservations")
+        .select("*")
+        .where({ reservation_date: date })
+        .orderBy( "reservation_time", 'asc' )
+}
+
 module.exports = {
     list,
     read,
-    create
+    create,
+    listByDate
 }
