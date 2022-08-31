@@ -45,7 +45,6 @@
     "test:e2e": "npm run test:e2e --prefix ./front-end",
     "test:frontend:watch": "npm test --prefix ./front-end"
   },
-  "proxy": "http://localhost:5001/",
   "keywords": [],
   "author": "Thinkful, Inc.",
   "license": "UNLICENSED"
