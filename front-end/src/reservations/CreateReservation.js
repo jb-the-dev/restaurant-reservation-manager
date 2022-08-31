@@ -20,8 +20,6 @@ export default function CreateReservation() {
                 people: Number(formData.get("people")),
             }
         }
-        console.log("new REZZIE", newReservation)
-
         const sent = await createReservation(newReservation)
 
         if (sent) history.push(`/dashboard?date=${formData.get("reservation_date")}`)
@@ -29,7 +27,12 @@ export default function CreateReservation() {
         //? will we need to make this conditional to update existing reservations?
     }
 
+    const handleCancel = (event) => {
+        event.preventDefault();
+        history.goBack();
+    }
+
     return (
-        <ReservationForm handleSubmit={handleSubmit}/>
+        <ReservationForm handleSubmit={handleSubmit} handleCancel={handleCancel}/>
     )
 }

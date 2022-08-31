@@ -1,6 +1,6 @@
 // import ErrorAlert from "./ErrorAlert";
 
-export default function ReservationForm({handleSubmit}) {
+export default function ReservationForm({handleSubmit, handleCancel}) {
 
   return (
     <>
@@ -13,8 +13,6 @@ export default function ReservationForm({handleSubmit}) {
             name="first_name" 
             type="text" 
             className="form-control" 
-            // value={} 
-            // onChange={} 
             placeholder="" 
             required />
         <label htmlFor="last_name" className="form-label">
@@ -25,8 +23,6 @@ export default function ReservationForm({handleSubmit}) {
             name="last_name" 
             type="text" 
             className="form-control" 
-            // value={} 
-            // onChange={} 
             placeholder="" 
             required />        
         <label htmlFor="mobile_number" className="form-label">
@@ -38,8 +34,6 @@ export default function ReservationForm({handleSubmit}) {
             type="tel" 
             className="form-control"
             pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
-            // value={} 
-            // onChange={} 
             placeholder="123-456-7890" 
             required />        
         <label htmlFor="reservation_date" className="form-label">
@@ -50,9 +44,6 @@ export default function ReservationForm({handleSubmit}) {
             name="reservation_date" 
             type="date" 
             className="form-control" 
-            // value={} 
-            // onChange={} 
-            placeholder="" 
             required />        
         <label htmlFor="reservation_time" className="form-label">
           Reservation Time
@@ -62,9 +53,6 @@ export default function ReservationForm({handleSubmit}) {
             name="reservation_time" 
             type="time" 
             className="form-control" 
-            // value={} 
-            // onChange={} 
-            placeholder="" 
             required />        
         <label htmlFor="people" className="form-label">
           Group Size
@@ -74,16 +62,13 @@ export default function ReservationForm({handleSubmit}) {
             name="people" 
             type="number" 
             className="form-control" 
-            // value={} 
-            // onChange={}
             maxLength={2} 
             min={1}
             placeholder="" 
             required />        
         <button type="submit" className="btn btn-primary">Submit</button>
-        <button className="btn btn-danger">Cancel</button>
+        <button className="btn btn-danger" onClick={handleCancel}>Cancel</button>
       </form>
-      {/* <ErrorAlert /> */}
     </>
   );
 }
