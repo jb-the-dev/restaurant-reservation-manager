@@ -65,6 +65,7 @@ export default function CreateReservation() {
 
   return (
     <>
+        <h2 className="mb-4">Create new reservation</h2>
       {dateError && <ErrorAlert error={dateError} />}
       <ReservationForm
         handleSubmit={handleSubmit}

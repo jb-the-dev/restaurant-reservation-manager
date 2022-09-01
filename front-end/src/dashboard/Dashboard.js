@@ -3,6 +3,7 @@ import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { today } from "../utils/date-time";
 import useQuery from "../utils/useQuery"
+import { Link } from "react-router-dom";
 
 /**
  * Defines the dashboard page.
@@ -29,7 +30,21 @@ function Dashboard() {
     return () => abortController.abort();
   }
 
+  //TODO build handleCancel including a window.confirm() prompt
+  const handleCancel = (event) => {
+    event.preventDefault();
+    let confirmed = window.confirm("Do you want to cancel this reservation? This cannot be undone")
+    if (confirmed) {
+      //TODO throw logic in to axios.put() to change reservation status to "cancelled"
+    } 
+  }
+
+
+  //TODO verify if Link tag will work on href test, or if need to use 'a' tag
+  //TODO 
+
   //TODO turn reservationMapper (rename?) into its own component
+  //TODO reformat "created_at" and "updated on" data to render more readably; take out the `T`, `Z`, and seconds values
   let reservationList = reservations.map(reservation => (
       <div className="card" key={reservation.reservation_id}>
         <p>Name: {reservation.first_name} {reservation.last_name}</p>
@@ -38,6 +53,14 @@ function Dashboard() {
         <p>Reservation time: {reservation.reservation_time}</p>
         <p>Created on: {reservation.created_at}</p>
         <p>Last updated on: {reservation.updated_at}</p>
+        <Link 
+          to={`/reservations/${reservation.reservation_id}/edit`} className="btn btn-info mb-2"
+        >Edit</Link>
+        <button 
+          data-reservation-id-cancel={reservation.reservation_id}
+          className="btn btn-danger"
+          onClick={handleCancel}
+        >Cancel</button>
       </div>
   ))
 
@@ -52,7 +75,7 @@ function Dashboard() {
       </div>
       <ErrorAlert error={reservationsError} />
       <button 
-        className="btn btn-secondary"
+        className="btn btn-secondary mr-3"
         // onClick={}
       >Previous Day</button>
       <button 

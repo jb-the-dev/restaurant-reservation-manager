@@ -69,7 +69,7 @@ export default function ReservationForm({handleSubmit, handleCancel }) {
             min={1}
             placeholder="" 
             required />        
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button type="submit" className="btn btn-primary mb-2">Submit</button>
         <button className="btn btn-danger" onClick={handleCancel}>Cancel</button>
       </form>
     </>
