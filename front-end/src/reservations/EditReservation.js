@@ -17,7 +17,7 @@ export default function EditReservation() {
             <h2>Edit the reservation</h2>
             <br />
             <ReservationForm 
-                // handleCancel={}
+                handleCancel={handleCancel}
                 // handleEdit={}
             />
         </>

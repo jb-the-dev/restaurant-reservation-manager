@@ -3,18 +3,21 @@ import { useHistory } from "react-router-dom";
 import { createReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { useState } from "react";
+import { DateTime } from "luxon";
 
 export default function CreateReservation() {
   const [dateError, setDateError] = useState(null);
+  const [timeError, setTimeError] = useState(null);
   const history = useHistory();
 
   //TODO refactor dateValidator into utils folder; be mindful of state mgmt
   function dateValidator(date) {
-    let errors = []
+    let errors = [];
+
     try {
       if (date < new Date()) {
         errors.push(
-            "Sorry, but we cannot accept reservations for any time earlier than today. You may be able to time travel, but none of our staff can."
+          "Sorry, but we cannot accept reservations for any time earlier than today. You may be able to time travel, but none of our staff can."
         );
       }
       if (date.getDay() === 2) {
@@ -22,10 +25,32 @@ export default function CreateReservation() {
           "No reservations can be made on Tuesdays. Our restaurant is closed."
         );
       }
-      if (errors.length !== 0) throw new Error (errors.join(' AND '))
+      if (errors.length !== 0) throw new Error(errors.join(" AND "));
       return true;
     } catch (error) {
       setDateError(error);
+      return false;
+    }
+  }
+
+  function timeValidator(time) {
+    let errors = [];
+
+    const openingTime = DateTime.fromISO("10:30");
+    const closingTime = DateTime.fromISO("21:30");
+
+    try {
+      if (time < openingTime) {
+        errors.push("Reservations cannot be made before 10:30 AM.");
+      }
+      if (time > closingTime) {
+        errors.push("Reservations cannot be made after 9:30 PM.");
+      }
+      if (errors.length !== 0) throw new Error(errors.join(" AND "));
+
+      return true;
+    } catch (error) {
+      setTimeError(error);
       return false;
     }
   }
@@ -47,10 +72,12 @@ export default function CreateReservation() {
     const date = new Date(
       newReservation.data.reservation_date.replaceAll("-", "/")
     ); // .replaceAll, otherwise Date object moves to day previous of inputted
+    const time = DateTime.fromISO(newReservation.data.reservation_time);
 
-    let isValid = dateValidator(date);
+    let isValidTime = timeValidator(time);
+    let isValidDate = dateValidator(date);
 
-    if (isValid) {
+    if (isValidDate && isValidTime) {
       await createReservation(newReservation);
       history.push(`/dashboard?date=${formData.get("reservation_date")}`);
     }
@@ -65,8 +92,10 @@ export default function CreateReservation() {
 
   return (
     <>
-        <h2 className="mb-4">Create new reservation</h2>
-      {dateError && <ErrorAlert error={dateError} />}
+      <h2 className="mb-4">Create new reservation</h2>
+      {(dateError || timeError) && (
+        <ErrorAlert error={dateError || timeError} />
+      )}
       <ReservationForm
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
