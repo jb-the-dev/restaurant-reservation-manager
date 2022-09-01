@@ -69,7 +69,7 @@ async function hasRequiredProperties(req, res, next) {
 /**
  * Specific validator to check reservation_date is a date
  */
-async function isValidDate(req, res, next) {
+async function isValidDateFormat(req, res, next) {
   const { data = {} } = req.body;
   let dateResult = DateTime.fromISO(data["reservation_date"]);
 
@@ -77,6 +77,38 @@ async function isValidDate(req, res, next) {
     return next({
       status: 400,
       message: `The date inputted is not valid reservation_date.`,
+    });
+  }
+  next();
+}
+
+/**
+ * Specific validator to check reservation_date is a date in the future.
+ */
+async function isFutureDate(req, res, next) {
+  const { data = {} } = req.body;
+  const date = new Date(data.reservation_date.replaceAll("-", "/"));
+
+  if (date < new Date()) {
+    return next({
+      status: 400,
+      message: `Please make sure to pick a date in the future.`,
+    });
+  }
+  next();
+}
+
+/**
+ * Specific validator to check reservation_date does not fall on a Tuesday
+ */
+async function isNotTuesday(req, res, next) {
+  const { data = {} } = req.body;
+  const date = new Date(data.reservation_date.replaceAll("-", "/"));
+
+  if (date.getDay() === 2) {
+    return next({
+      status: 400,
+      message: `The restaurant is closed on Tuesdays.`,
     });
   }
   next();
@@ -101,17 +133,17 @@ async function isValidTime(req, res, next) {
 /**
  * Specific validator to check reservation_time is a time
  */
- async function isValidPeopleProp(req, res, next) {
+async function isValidPeopleProp(req, res, next) {
   const { data = {} } = req.body;
 
-  if ( typeof data["people"] !== "number" ) {
+  if (typeof data["people"] !== "number") {
     return next({
       status: 400,
-      message: "Data in 'people' must be a number."
-    })
+      message: "Data in 'people' must be a number.",
+    });
   }
   next();
- }
+}
 
 // HANDLERS
 
@@ -133,23 +165,26 @@ function read(req, res) {
 
 async function create(req, res) {
   let newReservation = await service.create(req.body.data);
-  res.status(201).json({ data: newReservation});
+
+  res.status(201).json({ data: newReservation });
 }
 
 async function listByDate(req, res, next) {
-  let date = req.query.date
-  res.json({ data: await service.listByDate(date) })
+  let date = req.query.date;
+  res.json({ data: await service.listByDate(date) });
 }
 
 module.exports = {
-  list:  asyncErrorBoundary(list),
+  list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(reservationExists), read],
   create: [
     asyncErrorBoundary(hasOnlyValidProperties),
     asyncErrorBoundary(hasRequiredProperties),
-    asyncErrorBoundary(isValidDate),
+    asyncErrorBoundary(isValidDateFormat),
     asyncErrorBoundary(isValidTime),
     asyncErrorBoundary(isValidPeopleProp),
+    asyncErrorBoundary(isFutureDate),
+    asyncErrorBoundary(isNotTuesday),
     asyncErrorBoundary(create),
   ],
   listByDate: asyncErrorBoundary(listByDate),
