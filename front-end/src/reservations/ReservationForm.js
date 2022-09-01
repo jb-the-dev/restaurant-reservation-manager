@@ -1,6 +1,7 @@
-// import ErrorAlert from "./ErrorAlert";
+import { today } from "../utils/date-time";
+// keeping this import above to add a "min" later to `reservation_date` to further prevent user error
 
-export default function ReservationForm({handleSubmit, handleCancel}) {
+export default function ReservationForm({handleSubmit, handleCancel }) {
 
   return (
     <>
@@ -44,6 +45,7 @@ export default function ReservationForm({handleSubmit, handleCancel}) {
             name="reservation_date" 
             type="date" 
             className="form-control" 
+            // min={today()}
             required />        
         <label htmlFor="reservation_time" className="form-label">
           Reservation Time

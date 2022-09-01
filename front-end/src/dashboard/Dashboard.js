@@ -23,16 +23,15 @@ function Dashboard() {
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
-    listReservations({ date }, abortController.signal) //takes "date" from `today()` in date-time.js
+    listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
     return () => abortController.abort();
   }
-  //TODO sort list of reservations from earliest time to latest, then map;
 
   //TODO turn reservationMapper (rename?) into its own component
   let reservationList = reservations.map(reservation => (
-      <div className="card">
+      <div className="card" key={reservation.reservation_id}>
         <p>Name: {reservation.first_name} {reservation.last_name}</p>
         <p>Mobile number: {reservation.mobile_number}</p>
         <p>Party size: {reservation.people}</p>
