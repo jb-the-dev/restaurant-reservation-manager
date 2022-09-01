@@ -28,6 +28,19 @@ function Dashboard() {
       .catch(setReservationsError);
     return () => abortController.abort();
   }
+  //TODO sort list of reservations from earliest time to latest, then map;
+
+  //TODO turn reservationMapper (rename?) into its own component
+  let reservationList = reservations.map(reservation => (
+      <div className="card">
+        <p>Name: {reservation.first_name} {reservation.last_name}</p>
+        <p>Mobile number: {reservation.mobile_number}</p>
+        <p>Party size: {reservation.people}</p>
+        <p>Reservation time: {reservation.reservation_time}</p>
+        <p>Created on: {reservation.created_at}</p>
+        <p>Last updated on: {reservation.updated_at}</p>
+      </div>
+  ))
 
 
   //buttons below (next, previous) should take you to new URLs; do NOT change the current URL
@@ -35,12 +48,18 @@ function Dashboard() {
     <main>
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date</h4>
+        <h4 className="mb-0">Reservations for {date === today() ? "Today" : date}</h4>
+        <div>{reservationList}</div>
       </div>
       <ErrorAlert error={reservationsError} />
-      {JSON.stringify(reservations)}
-      <button></button>
-      <button></button>
+      <button 
+        className="btn btn-secondary"
+        // onClick={}
+      >Previous Day</button>
+      <button 
+        className="btn btn-primary"
+        // onClick={}
+      >Next Day</button>
     </main>
   );
 }
