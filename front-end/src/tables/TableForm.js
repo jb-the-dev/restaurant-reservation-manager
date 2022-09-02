@@ -1,3 +1,6 @@
+import SubmitButton from "../buttons/SubmitButton"
+import CancelButton from "../buttons/CancelButton"
+
 export default function TableForm() {
   return (
     <form>
@@ -25,8 +28,8 @@ export default function TableForm() {
         min={1}
         required
       />
-      <button>Submit</button>
-      <button>Cancel</button>
+        <SubmitButton />
+        <CancelButton />
     </form>
   );
 }
