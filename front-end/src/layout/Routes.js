@@ -6,6 +6,7 @@ import NotFound from "./NotFound";
 import CreateReservation from "../reservations/CreateReservation";
 import EditReservation from "../reservations/EditReservation";
 import CreateTable from "../tables/CreateTable";
+// import TableList from "../tables/TableList";
 
 /**
  * Defines all the routes for the application.
@@ -35,6 +36,9 @@ function Routes() {
       <Route exact={true} path="/tables/new">
         <CreateTable />
       </Route>
+      {/* <Route exact={true} path="/tables">
+        <TableList />
+      </Route> */}
       <Route>
         <NotFound />
       </Route>
