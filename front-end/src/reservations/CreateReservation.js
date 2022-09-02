@@ -82,7 +82,7 @@ export default function CreateReservation() {
       history.push(`/dashboard?date=${formData.get("reservation_date")}`);
     }
 
-    //? will we need to make this conditional to update existing reservations?
+    //? will we need to make this handleSubmit work to also update existing reservations?
   };
 
   const handleCancel = (event) => {

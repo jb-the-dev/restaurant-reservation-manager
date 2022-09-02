@@ -114,6 +114,35 @@ async function isNotTuesday(req, res, next) {
   next();
 }
 
+async function isTooEarly(req, res, next) {
+  const { data = {} } = req.body;
+  const time = DateTime.fromISO(data.reservation_time)
+  const openingTime = DateTime.fromISO("10:30");
+  
+  if (time < openingTime) {
+    return next({
+      status: 400,
+      message: `Reservation time of ${data.reservation_time} is too early.`
+    })
+  }
+  next();
+}
+
+async function isTooLate(req, res, next) {
+  const { data = {} } = req.body;
+  const time = DateTime.fromISO(data.reservation_time)
+
+  const kitchenClosingTime = DateTime.fromISO("21:30");
+  
+  if (time > kitchenClosingTime) {
+    return next({
+      status: 400,
+      message: `Reservation time of ${data.reservation_time} is too late.`
+    })
+  }
+  next();
+}
+
 /**
  * Specific validator to check reservation_time is a time
  */
@@ -185,6 +214,8 @@ module.exports = {
     asyncErrorBoundary(isValidPeopleProp),
     asyncErrorBoundary(isFutureDate),
     asyncErrorBoundary(isNotTuesday),
+    asyncErrorBoundary(isTooEarly),
+    asyncErrorBoundary(isTooLate),
     asyncErrorBoundary(create),
   ],
   listByDate: asyncErrorBoundary(listByDate),
