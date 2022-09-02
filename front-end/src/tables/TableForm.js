@@ -1,0 +1,32 @@
+export default function TableForm() {
+  return (
+    <form>
+      <label htmlFor="table_name" className="form-label">
+        First Name
+      </label>
+      <input
+        id="table_name"
+        name="table_name"
+        type="text"
+        className="form-control"
+        placeholder=""
+        minLength={2}
+        required
+      />
+      <label htmlFor="capacity" className="form-label">
+        First Name
+      </label>
+      <input
+        id="capacity"
+        name="capacity"
+        type="number"
+        className="form-control"
+        placeholder=""
+        min={1}
+        required
+      />
+      <button>Submit</button>
+      <button>Cancel</button>
+    </form>
+  );
+}
