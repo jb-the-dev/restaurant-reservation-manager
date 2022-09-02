@@ -1,8 +1,9 @@
-export default function SeatTableButton() {
+export default function SeatTableButton({reservation_id}) {
     return (
-        <button 
+      <a 
         className="btn btn-warning"
         // onClick={}
-      >Seat</button>
+        href={`/reservations/${reservation_id}/seat`}
+      >Seat</a>
     )
 }

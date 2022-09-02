@@ -8,6 +8,7 @@ import PreviousDay from "./PreviousDay";
 import NextDay from "./NextDay";
 import SeatTableButton from "../buttons/SeatTableButton";
 import CancelReservationButton from "../buttons/CancelReservationButton";
+import EditReservationButton from "../buttons/EditReservationButton";
 
 /**
  * Defines the dashboard page.
@@ -57,11 +58,9 @@ function Dashboard() {
         <p>Reservation time: {reservation.reservation_time}</p>
         <p>Created on: {reservation.created_at}</p>
         <p>Last updated on: {reservation.updated_at}</p>
-        <Link 
-          to={`/reservations/${reservation.reservation_id}/edit`} className="btn btn-info mb-2"
-        >Edit</Link>
-        <CancelReservationButton reservation={reservation} handleCancel={handleCancel}/>
-        <SeatTableButton />
+        <EditReservationButton reservation_id={reservation.reservation_id} />
+        <CancelReservationButton reservation_id={reservation.reservation_id} handleCancel={handleCancel}/>
+        <SeatTableButton reservation_id={reservation.reservation_id}/>
       </div>
   ))
 
