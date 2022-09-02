@@ -6,6 +6,8 @@ import useQuery from "../utils/useQuery"
 import { Link } from "react-router-dom";
 import PreviousDay from "./PreviousDay";
 import NextDay from "./NextDay";
+import SeatTableButton from "../buttons/SeatTableButton";
+import CancelReservationButton from "../buttons/CancelReservationButton";
 
 /**
  * Defines the dashboard page.
@@ -58,19 +60,24 @@ function Dashboard() {
         <Link 
           to={`/reservations/${reservation.reservation_id}/edit`} className="btn btn-info mb-2"
         >Edit</Link>
-        <button 
-          data-reservation-id-cancel={reservation.reservation_id}
-          className="btn btn-danger"
-          onClick={handleCancel}
-        >Cancel</button>
+        <CancelReservationButton reservation={reservation} handleCancel={handleCancel}/>
+        <SeatTableButton />
       </div>
   ))
 
 
-  //buttons below (next, previous) should take you to new URLs; do NOT change the current URL
+  //* buttons below (next, previous) should take you to new URLs; do NOT change the current URL
   return (
     <main>
       <h1>Dashboard</h1>
+      <ul className="nav nav-tabs">
+          <li className="nav-item">
+            <Link to={``} className="nav-link">Reservations</Link>
+          </li>
+          <li className="nav-item">
+            <Link to={``} className="nav-link">Tables</Link>
+          </li>
+        </ul>
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {date === today() ? "Today" : date}</h4>
         <div>{reservationList}</div>

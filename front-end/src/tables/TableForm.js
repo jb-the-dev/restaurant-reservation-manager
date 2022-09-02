@@ -1,5 +1,5 @@
 import SubmitButton from "../buttons/SubmitButton"
-import CancelButton from "../buttons/CancelButton"
+import CancelTableButton from "../buttons/CancelTableButton"
 
 export default function TableForm() {
   return (
@@ -29,7 +29,7 @@ export default function TableForm() {
         required
       />
         <SubmitButton />
-        <CancelButton />
+        <CancelTableButton />
     </form>
   );
 }
