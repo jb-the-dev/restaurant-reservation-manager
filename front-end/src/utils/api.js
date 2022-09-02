@@ -72,3 +72,7 @@ export async function listReservations(params, signal) {
 export async function createReservation(newReservation) {
   return axios.post(`${API_BASE_URL}/reservations`, newReservation)
 }
+
+export async function getTables(){
+  return axios.get(`${API_BASE_URL}/tables`)
+}
