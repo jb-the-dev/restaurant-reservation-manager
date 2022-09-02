@@ -4,6 +4,8 @@ import ErrorAlert from "../layout/ErrorAlert";
 import { today } from "../utils/date-time";
 import useQuery from "../utils/useQuery"
 import { Link } from "react-router-dom";
+import PreviousDay from "./PreviousDay";
+import NextDay from "./NextDay";
 
 /**
  * Defines the dashboard page.
@@ -74,14 +76,8 @@ function Dashboard() {
         <div>{reservationList}</div>
       </div>
       <ErrorAlert error={reservationsError} />
-      <button 
-        className="btn btn-secondary mr-3"
-        // onClick={}
-      >Previous Day</button>
-      <button 
-        className="btn btn-primary"
-        // onClick={}
-      >Next Day</button>
+      <PreviousDay />
+      <NextDay />
     </main>
   );
 }
