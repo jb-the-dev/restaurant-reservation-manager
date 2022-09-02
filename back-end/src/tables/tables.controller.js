@@ -69,6 +69,15 @@ async function tableExists(req, res, next) {
     })
   }
 
+  async function isValidCapacity(req, res, next) {
+    const { data = {} } = req.body;
+
+    if (typeof data.capacity === "number" && data.capacity > 0 ) return next()
+    next({
+        status: 400,
+        message: "The capacity must exist and be a number greater than zero."
+    })
+  }
 
 // HANDLERS
 async function listTables(req, res, next){
@@ -94,6 +103,7 @@ module.exports = {
         asyncErrorBoundary(hasOnlyValidProperties),
         asyncErrorBoundary(hasRequiredProperties),
         asyncErrorBoundary(isValidTableName),
-        create
+        asyncErrorBoundary(isValidCapacity),
+        asyncErrorBoundary(create)
     ]
 }
