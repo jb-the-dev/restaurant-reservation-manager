@@ -2,8 +2,10 @@ import CancelReservationButton from "../buttons/CancelReservationButton";
 import EditReservationButton from "../buttons/EditReservationButton";
 import SeatTableButton from "../buttons/SeatTableButton";
 
-export default function ReservationList({reservations, handleCancel}) {
-    return reservations.map(reservation => (
+export default function ReservationList({ reservations, handleCancel}) {
+    return reservations.length === 0 
+      ? "No reservations for today yet... " 
+      : reservations.map(reservation => (
         <div className="card" key={reservation.reservation_id}>
           <p>Name: {reservation.first_name} {reservation.last_name}</p>
           <p>Mobile number: {reservation.mobile_number}</p>
