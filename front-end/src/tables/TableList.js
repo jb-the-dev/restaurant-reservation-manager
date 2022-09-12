@@ -10,22 +10,21 @@ export default function TableList() {
             let response = await getTables();
             let tablesData = response.data.data
             console.log("TABLES DATA", tablesData)
-            console.log("array", [1, 2, 3, 4, 5, 5, 6, 7, {},])
             setTables(tablesData)
         }
         getTableList();
-    }, [tables])
+    }, [])
 
     const tablesList = tables.map((table) =>(
-        <li>
-            <p key={table.table_id}>Table: {table.table_name}</p>
+        <li key={table.table_id}>
+            <p>Table: {table.table_name}</p>
         </li>
     ))
 
     return (
         <>
             <h2>I am supposed to be a table list</h2>
-            {tablesList}
+            {tables.length === 0 ? "Loading list of tables..." : tablesList}
         </>
     )
 }
