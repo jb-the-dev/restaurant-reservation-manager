@@ -13,14 +13,16 @@ export default function CreateReservation() {
   //TODO refactor dateValidator into utils folder; be mindful of state mgmt
   function dateValidator(date) {
     let errors = [];
-
+    
     try {
-      if (date < new Date()) {
+      if (date < DateTime.now()) {
+        console.log("DATE INPUT", date)
+        console.log("DATE OBJ", DateTime.local())
         errors.push(
           "Sorry, but we cannot accept reservations for any time earlier than today. You may be able to time travel, but none of our staff can."
         );
       }
-      if (date.getDay() === 2) {
+      if (date.toFormat("ccc") === "Tue") {
         errors.push(
           "No reservations can be made on Tuesdays. Our restaurant is closed."
         );
@@ -69,8 +71,8 @@ export default function CreateReservation() {
         people: Number(formData.get("people")),
       },
     };
-    const date = new Date(
-      newReservation.data.reservation_date.replaceAll("-", "/")
+    const date = DateTime.fromISO(
+      `${newReservation.data.reservation_date}T${newReservation.data.reservation_time}`
     ); // .replaceAll, otherwise Date object moves to day previous of inputted
     const time = DateTime.fromISO(newReservation.data.reservation_time);
 

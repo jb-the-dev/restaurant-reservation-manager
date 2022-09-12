@@ -87,9 +87,11 @@ async function isValidDateFormat(req, res, next) {
  */
 async function isFutureDate(req, res, next) {
   const { data = {} } = req.body;
-  const date = new Date(data.reservation_date.replaceAll("-", "/"));
 
-  if (date < new Date()) {
+  const date = DateTime.fromISO(`${data.reservation_date}T${data.reservation_time}`)
+  // const date = new Date(data.reservation_date.replaceAll("-", "/"));
+
+  if (date < DateTime.now()) {
     return next({
       status: 400,
       message: `Please make sure to pick a date in the future.`,
@@ -187,6 +189,7 @@ async function list(req, res, next) {
 }
 
 function read(req, res) {
+  console.log("HELLO", res.locals.reservation)
   res.json({
     data: res.locals.reservation,
   });
