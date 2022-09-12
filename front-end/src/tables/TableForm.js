@@ -5,7 +5,7 @@ export default function TableForm() {
   return (
     <form>
       <label htmlFor="table_name" className="form-label">
-        First Name
+        Table Name
       </label>
       <input
         id="table_name"
@@ -17,7 +17,7 @@ export default function TableForm() {
         required
       />
       <label htmlFor="capacity" className="form-label">
-        First Name
+        Capacity
       </label>
       <input
         id="capacity"
