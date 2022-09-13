@@ -188,10 +188,10 @@ async function list(req, res, next) {
   });
 }
 
-function read(req, res) {
-  console.log("HELLO", res.locals.reservation)
+async function read(req, res) {
+  // console.log("HELLO", res.locals.reservation)
   res.json({
-    data: res.locals.reservation,
+    data: await service.read(req.params.reservation_id),
   });
 }
 
@@ -208,7 +208,7 @@ async function listByDate(req, res, next) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  read: [asyncErrorBoundary(reservationExists), read],
+  read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
   create: [
     asyncErrorBoundary(hasOnlyValidProperties),
     asyncErrorBoundary(hasRequiredProperties),
