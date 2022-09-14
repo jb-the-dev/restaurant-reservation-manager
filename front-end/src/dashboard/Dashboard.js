@@ -3,7 +3,7 @@ import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { today } from "../utils/date-time";
 import useQuery from "../utils/useQuery"
-import { Link, Route, Switch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PreviousDay from "./PreviousDay";
 import NextDay from "./NextDay";
 import ReservationList from "../reservations/ReservationList";
@@ -66,14 +66,8 @@ function Dashboard() {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {date === today() ? "Today" : date}</h4>
       </div>
-      <Switch>
-        <Route exact path={`/dashboard`}>
-          <ReservationList reservations={reservations} handleCancel={handleCancel}/>
-        </Route>
-        <Route exact path={`/dashboard/tables`}>
-          <TableList />
-        </Route>
-      </Switch>
+      <ReservationList reservations={reservations} handleCancel={handleCancel}/>
+      <TableList />
       <ErrorAlert error={reservationsError} />
       <PreviousDay />
       <NextDay />
