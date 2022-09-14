@@ -1,9 +1,9 @@
 import SubmitButton from "../buttons/SubmitButton"
 import CancelTableButton from "../buttons/CancelTableButton"
 
-export default function TableForm() {
+export default function TableForm({ handleSubmit, handleCancel }) {
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <label htmlFor="table_name" className="form-label">
         Table Name
       </label>
@@ -29,7 +29,7 @@ export default function TableForm() {
         required
       />
         <SubmitButton />
-        <CancelTableButton />
+        <CancelTableButton handleCancel={handleCancel} />
     </form>
   );
 }

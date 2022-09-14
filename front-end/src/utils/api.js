@@ -76,3 +76,11 @@ export async function createReservation(newReservation) {
 export async function getTables(){
   return axios.get(`${API_BASE_URL}/tables`)
 }
+
+export async function seatTable(tableId, config) {
+  return axios.put(`${API_BASE_URL}/tables/${tableId}/seat`, config)
+}
+
+export async function createTable(newTable) {
+  return axios.post(`${API_BASE_URL}/tables`, newTable)
+}

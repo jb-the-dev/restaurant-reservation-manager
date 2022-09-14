@@ -18,6 +18,8 @@ export default function TableList() {
     const tablesList = tables.map((table) =>(
         <li key={table.table_id}>
             <p>Table: {table.table_name}</p>
+            <p data-table-id-status={`${table.table_id}`}>Current Status: { table.reservation_id ? "Occupied" : "Free" }</p>
+            {/* {table.reservation_id} */}
         </li>
     ))
 
