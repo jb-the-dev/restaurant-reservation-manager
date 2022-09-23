@@ -158,6 +158,22 @@ async function update(req, res) {
   res.json({ data: await service.update(updatedTable) });
 }
 
+async function unseat(req, res, next) {
+  const { table_id } = req.params;
+  const { table } = res.locals;
+
+  if (table.reservation_id) {
+    const unseatedTable = await service.unseatReservation(table.reservation_id)
+    res.json({ data: unseatedTable })
+  } else {
+    //TODO split this validation into it's own function, isAlreadyUnseated
+    next({
+      status: 400,
+      message: `Table ${table_id} is not occupied already.`
+    })
+  }
+}
+
 module.exports = {
   list: asyncErrorBoundary(listTables),
   read: [asyncErrorBoundary(tableExists), getTable],
@@ -177,4 +193,7 @@ module.exports = {
     asyncErrorBoundary(isOccupied),
     asyncErrorBoundary(update),
   ],
+  unseat: [
+    asyncErrorBoundary(tableExists), asyncErrorBoundary(unseat)
+  ]
 };
