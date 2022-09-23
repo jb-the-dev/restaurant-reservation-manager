@@ -32,7 +32,7 @@ const VALID_PROPERTIES = [
 /**
  * Validator to check that each reservation contains only valid properties
  */
-async function hasOnlyValidProperties(req, res, next) {
+function hasOnlyValidProperties(req, res, next) {
   const { data = {} } = req.body;
 
   const invalidFields = Object.keys(data).filter((field) => {
@@ -51,7 +51,7 @@ async function hasOnlyValidProperties(req, res, next) {
 /**
  * Validator to check that each reservation contains all the required properties
  */
-async function hasRequiredProperties(req, res, next) {
+function hasRequiredProperties(req, res, next) {
   const { data = {} } = req.body;
 
   VALID_PROPERTIES.forEach((property) => {
@@ -69,7 +69,7 @@ async function hasRequiredProperties(req, res, next) {
 /**
  * Specific validator to check reservation_date is a date
  */
-async function isValidDateFormat(req, res, next) {
+function isValidDateFormat(req, res, next) {
   const { data = {} } = req.body;
   let dateResult = DateTime.fromISO(data["reservation_date"]);
 
@@ -85,7 +85,7 @@ async function isValidDateFormat(req, res, next) {
 /**
  * Specific validator to check reservation_date is a date in the future.
  */
-async function isFutureDate(req, res, next) {
+function isFutureDate(req, res, next) {
   const { data = {} } = req.body;
 
   const date = DateTime.fromISO(`${data.reservation_date}T${data.reservation_time}`)
@@ -103,7 +103,7 @@ async function isFutureDate(req, res, next) {
 /**
  * Specific validator to check reservation_date does not fall on a Tuesday
  */
-async function isNotTuesday(req, res, next) {
+function isNotTuesday(req, res, next) {
   const { data = {} } = req.body;
   const date = new Date(data.reservation_date.replaceAll("-", "/"));
 
@@ -116,7 +116,7 @@ async function isNotTuesday(req, res, next) {
   next();
 }
 
-async function isTooEarly(req, res, next) {
+function isTooEarly(req, res, next) {
   const { data = {} } = req.body;
   const time = DateTime.fromISO(data.reservation_time)
   const openingTime = DateTime.fromISO("10:30");
@@ -130,7 +130,7 @@ async function isTooEarly(req, res, next) {
   next();
 }
 
-async function isTooLate(req, res, next) {
+function isTooLate(req, res, next) {
   const { data = {} } = req.body;
   const time = DateTime.fromISO(data.reservation_time)
 
@@ -148,7 +148,7 @@ async function isTooLate(req, res, next) {
 /**
  * Specific validator to check reservation_time is a time
  */
-async function isValidTime(req, res, next) {
+function isValidTime(req, res, next) {
   const { data = {} } = req.body;
   let timeResult = DateTime.fromISO(data["reservation_time"]);
 
@@ -164,7 +164,7 @@ async function isValidTime(req, res, next) {
 /**
  * Specific validator to check reservation_time is a time
  */
-async function isValidPeopleProp(req, res, next) {
+function isValidPeopleProp(req, res, next) {
   const { data = {} } = req.body;
 
   if (typeof data["people"] !== "number") {
@@ -174,6 +174,41 @@ async function isValidPeopleProp(req, res, next) {
     });
   }
   next();
+}
+
+function isSatOrFinished(req, res, next) {
+  const reservation = req.body.data;
+
+  if (reservation.status !== "booked") {
+    return next({
+      status: 400,
+      message: `This reservation is already ${reservation.status}.`
+    })
+  }
+  next()
+}
+
+function isValidStatus(req, res, next) {
+  const { status } = req.body.data;
+  const validStatuses = ["booked", "finished", "seated", "cancelled"]
+
+  if (!validStatuses.includes(status)){
+    next({
+      status: 400,
+      message: `The reservation status ${status} is invalid.`
+    })
+  }
+  next();
+}
+
+function isFinished(req, res, next) {
+  const { status } = res.locals.reservation;
+  if (status === "finished") 
+    return next({
+      status: 400,
+      message: "This reservation is already finished."
+    })
+  next()
 }
 
 // HANDLERS
@@ -201,25 +236,44 @@ async function create(req, res) {
   res.status(201).json({ data: newReservation });
 }
 
-async function listByDate(req, res, next) {
+async function listByDate(req, res) {
   let date = req.query.date;
   res.json({ data: await service.listByDate(date) });
+}
+
+async function update(req, res) {
+  const { reservation_id } = req.params;
+  const updatedReservationData = req.body.data;
+
+  const updatedReservation = {
+    ...updatedReservationData,
+    reservation_id: reservation_id
+  }
+
+  res.json({ data: await service.update(updatedReservation) })
 }
 
 module.exports = {
   list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
   create: [
-    asyncErrorBoundary(hasOnlyValidProperties),
-    asyncErrorBoundary(hasRequiredProperties),
-    asyncErrorBoundary(isValidDateFormat),
-    asyncErrorBoundary(isValidTime),
-    asyncErrorBoundary(isValidPeopleProp),
-    asyncErrorBoundary(isFutureDate),
-    asyncErrorBoundary(isNotTuesday),
-    asyncErrorBoundary(isTooEarly),
-    asyncErrorBoundary(isTooLate),
+    hasOnlyValidProperties,
+    hasRequiredProperties,
+    isValidDateFormat,
+    isValidTime,
+    isValidPeopleProp,
+    isFutureDate,
+    isNotTuesday,
+    isTooEarly,
+    isTooLate,
+    isSatOrFinished,
     asyncErrorBoundary(create),
   ],
   listByDate: asyncErrorBoundary(listByDate),
+  updateStatus: [
+    asyncErrorBoundary(reservationExists),
+    isFinished,
+    isValidStatus,
+    asyncErrorBoundary(update)
+  ]
 };

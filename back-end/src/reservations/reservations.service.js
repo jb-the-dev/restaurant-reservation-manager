@@ -25,9 +25,17 @@ function listByDate(date){
         .orderBy( "reservation_time", 'asc' )
 }
 
+function update(updatedReservation) {
+    return knex("reservations")
+        .where({ reservation_id: updatedReservation.reservation_id })
+        .update(updatedReservation)
+        .then(() => read(updatedReservation.reservation_id))
+}
+
 module.exports = {
     list,
     read,
     create,
-    listByDate
+    listByDate,
+    update
 }
