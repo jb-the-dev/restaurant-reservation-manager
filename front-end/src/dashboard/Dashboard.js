@@ -3,7 +3,6 @@ import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { today } from "../utils/date-time";
 import useQuery from "../utils/useQuery"
-import { Link } from "react-router-dom";
 import PreviousDay from "./PreviousDay";
 import NextDay from "./NextDay";
 import ReservationList from "../reservations/ReservationList";
@@ -55,14 +54,6 @@ function Dashboard() {
   return (
     <main>
       <h1>Dashboard</h1>
-      <ul className="nav nav-tabs">
-          <li className="nav-item">
-            <Link to={``} className="nav-link">Reservations</Link>
-          </li>
-          <li className="nav-item">
-            <Link to={`/dashboard/tables`} className="nav-link">Tables</Link>
-          </li>
-        </ul>
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {date === today() ? "Today" : date}</h4>
       </div>
