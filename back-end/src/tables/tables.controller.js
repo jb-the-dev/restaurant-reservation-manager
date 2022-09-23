@@ -123,6 +123,7 @@ async function groupFitsAtTable(req, res, next) {
 }
 
 //TODO remove the bonus "is_occupied" field from the seed json file, the migration file, and re-migrate tables
+// NB! this validator is paired with seating tables
 async function isOccupied(req, res, next) {
   const table = res.locals.table;
   if (table.reservation_id)
@@ -131,6 +132,19 @@ async function isOccupied(req, res, next) {
       message: "Sorry, this table is currently occupied",
     });
   return next();
+}
+
+// NB! this validator is paired with unseating tables
+async function isNotOccupied(req, res, next) {
+  const { table_id } = req.params;
+  const table = res.locals.table;
+
+  if (!table.reservation_id)
+    return next({
+      status: 400,
+      message: `Table ${table_id} is not occupied already.`
+    })
+  return next()
 }
 
 // HANDLERS
@@ -159,19 +173,9 @@ async function update(req, res) {
 }
 
 async function unseat(req, res, next) {
-  const { table_id } = req.params;
   const { table } = res.locals;
 
-  if (table.reservation_id) {
-    const unseatedTable = await service.unseatReservation(table.reservation_id)
-    res.json({ data: unseatedTable })
-  } else {
-    //TODO split this validation into it's own function, isAlreadyUnseated
-    next({
-      status: 400,
-      message: `Table ${table_id} is not occupied already.`
-    })
-  }
+  res.json({ data: await service.unseatReservation(table.reservation_id) })
 }
 
 module.exports = {
@@ -194,6 +198,8 @@ module.exports = {
     asyncErrorBoundary(update),
   ],
   unseat: [
-    asyncErrorBoundary(tableExists), asyncErrorBoundary(unseat)
+    asyncErrorBoundary(tableExists), 
+    asyncErrorBoundary(isNotOccupied),
+    asyncErrorBoundary(unseat)
   ]
 };
