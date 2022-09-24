@@ -176,29 +176,30 @@ function isValidPeopleProp(req, res, next) {
   next();
 }
 
-function isSatOrFinished(req, res, next) {
-  const reservation = req.body.data;
+function hasBookedStatus(req, res, next) {
+  const { status = {} } = req.body.data;
 
-  if (reservation.status !== "booked") {
-    return next({
-      status: 400,
-      message: `This reservation is already ${reservation.status}.`
-    })
-  }
-  next()
+  if (status) {
+    if (status !== "booked") {
+      next({
+        status: 400,
+        message: `${status} statuses are not allowed. Only booked is allowed.`,
+      });
+    } else next();
+  } else next();
 }
 
-function isValidStatus(req, res, next) {
-  const { status } = req.body.data;
+function isValidUpdatedStatus(req, res, next){
+  const { status = {} } = req.body.data;
   const validStatuses = ["booked", "finished", "seated", "cancelled"]
 
-  if (!validStatuses.includes(status)){
-    next({
-      status: 400,
-      message: `The reservation status ${status} is invalid.`
-    })
-  }
-  next();
+    if (!validStatuses.includes(status)){
+      next({
+        status: 400,
+        message: `The reservation status ${status} is invalid.`
+      })
+    }
+    next();
 }
 
 function isFinished(req, res, next) {
@@ -217,10 +218,8 @@ function isFinished(req, res, next) {
  * List handler for reservation resources
  */
 async function list(req, res, next) {
-  if (req.query) return next();
-  res.json({
-    data: await service.list(),
-  });
+  if (req.query) return next()
+  else res.json({ data: await service.list() });
 }
 
 async function read(req, res) {
@@ -255,6 +254,7 @@ async function update(req, res) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
+  listByDate: asyncErrorBoundary(listByDate),
   read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
   create: [
     hasOnlyValidProperties,
@@ -266,14 +266,13 @@ module.exports = {
     isNotTuesday,
     isTooEarly,
     isTooLate,
-    isSatOrFinished,
+    hasBookedStatus,
     asyncErrorBoundary(create),
   ],
-  listByDate: asyncErrorBoundary(listByDate),
   updateStatus: [
     asyncErrorBoundary(reservationExists),
     isFinished,
-    isValidStatus,
+    isValidUpdatedStatus,
     asyncErrorBoundary(update)
   ]
 };
