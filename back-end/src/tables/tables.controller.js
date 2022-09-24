@@ -21,7 +21,7 @@ const VALID_PROPERTIES = ["table_name", "capacity"];
 /**
  * Validator to check that each table contains only valid properties
  */
-async function hasOnlyValidProperties(req, res, next) {
+function hasOnlyValidProperties(req, res, next) {
   const { data = {} } = req.body;
 
   const invalidFields = Object.keys(data).filter((field) => {
@@ -40,7 +40,7 @@ async function hasOnlyValidProperties(req, res, next) {
 /**
  * Validator to check that each table contains all the required properties
  */
-async function hasRequiredProperties(req, res, next) {
+function hasRequiredProperties(req, res, next) {
   const { data = {} } = req.body;
 
   VALID_PROPERTIES.forEach((property) => {
@@ -54,7 +54,7 @@ async function hasRequiredProperties(req, res, next) {
   next();
 }
 
-async function isValidTableName(req, res, next) {
+function isValidTableName(req, res, next) {
   const { data = {} } = req.body;
 
   if (data.table_name.length > 1) return next();
@@ -64,7 +64,7 @@ async function isValidTableName(req, res, next) {
   });
 }
 
-async function isValidCapacity(req, res, next) {
+function isValidCapacity(req, res, next) {
   const { data = {} } = req.body;
 
   if (typeof data.capacity === "number" && data.capacity > 0) return next();
@@ -74,7 +74,7 @@ async function isValidCapacity(req, res, next) {
   });
 }
 
-async function hasData(req, res, next) {
+function hasData(req, res, next) {
   if (req.body.data) return next();
   next({
     status: 400,
@@ -82,7 +82,7 @@ async function hasData(req, res, next) {
   });
 }
 
-async function hasReservationId(req, res, next) {
+function hasReservationId(req, res, next) {
   const { data = {} } = req.body;
 
   if (!Object.hasOwn(data, "reservation_id"))
@@ -124,7 +124,7 @@ async function groupFitsAtTable(req, res, next) {
 
 //TODO remove the bonus "is_occupied" field from the seed json file, the migration file, and re-migrate tables
 // NB! this validator is paired with seating tables
-async function isOccupied(req, res, next) {
+function isOccupied(req, res, next) {
   const table = res.locals.table;
   if (table.reservation_id)
     return next({
@@ -135,7 +135,7 @@ async function isOccupied(req, res, next) {
 }
 
 // NB! this validator is paired with unseating tables
-async function isNotOccupied(req, res, next) {
+function isNotOccupied(req, res, next) {
   const { table_id } = req.params;
   const table = res.locals.table;
 
@@ -145,6 +145,18 @@ async function isNotOccupied(req, res, next) {
       message: `Table ${table_id} is not occupied already.`
     })
   return next()
+}
+
+function reservationAlreadySeated(req, res, next) {
+  const { status } = res.locals.reservation;
+
+  if (status === "seated") {
+    next({
+      status: 400,
+      message: "This reservation is already seated."
+    })
+  }
+  next()
 }
 
 // HANDLERS
@@ -182,24 +194,25 @@ module.exports = {
   list: asyncErrorBoundary(listTables),
   read: [asyncErrorBoundary(tableExists), getTable],
   create: [
-    asyncErrorBoundary(hasOnlyValidProperties),
-    asyncErrorBoundary(hasRequiredProperties),
-    asyncErrorBoundary(isValidTableName),
-    asyncErrorBoundary(isValidCapacity),
+    hasOnlyValidProperties,
+    hasRequiredProperties,
+    isValidTableName,
+    isValidCapacity,
     asyncErrorBoundary(create),
   ],
   update: [
     asyncErrorBoundary(tableExists),
-    asyncErrorBoundary(hasData),
-    asyncErrorBoundary(hasReservationId),
+    hasData,
+    hasReservationId,
     asyncErrorBoundary(reservationExists),
     asyncErrorBoundary(groupFitsAtTable),
-    asyncErrorBoundary(isOccupied),
+    isOccupied,
+    reservationAlreadySeated,
     asyncErrorBoundary(update),
   ],
   unseat: [
     asyncErrorBoundary(tableExists), 
-    asyncErrorBoundary(isNotOccupied),
+    isNotOccupied,
     asyncErrorBoundary(unseat)
   ]
 };
