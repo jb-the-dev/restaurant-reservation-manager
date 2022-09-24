@@ -2,60 +2,17 @@ import ReservationForm from "./ReservationForm";
 import { useHistory } from "react-router-dom";
 import { createReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
+import { businessHoursValidator, futureTimeValidator, notTuesdayValidator } from "../utils/reservationValidators";
 import { useState } from "react";
-import { DateTime } from "luxon";
 
 export default function CreateReservation() {
-  const [dateError, setDateError] = useState(null);
-  const [timeError, setTimeError] = useState(null);
+  const [tuesdayError, setTuesdayError] = useState(null);
+  const [businessHoursError, setBusinessHoursError] = useState(null);
+  const [futureTimeError, setFutureTimeError] = useState(null);
+
   const history = useHistory();
-
+  
   //TODO refactor dateValidator into utils folder; be mindful of state mgmt
-  function dateValidator(date) {
-    let errors = [];
-    
-    try {
-      if (date < DateTime.now()) {
-        console.log("DATE INPUT", date)
-        console.log("DATE OBJ", DateTime.local())
-        errors.push(
-          "Sorry, but we cannot accept reservations for any time earlier than today. You may be able to time travel, but none of our staff can."
-        );
-      }
-      if (date.toFormat("ccc") === "Tue") {
-        errors.push(
-          "No reservations can be made on Tuesdays. Our restaurant is closed."
-        );
-      }
-      if (errors.length !== 0) throw new Error(errors.join(" AND "));
-      return true;
-    } catch (error) {
-      setDateError(error);
-      return false;
-    }
-  }
-
-  function timeValidator(time) {
-    let errors = [];
-
-    const openingTime = DateTime.fromISO("10:30");
-    const closingTime = DateTime.fromISO("21:30");
-
-    try {
-      if (time < openingTime) {
-        errors.push("Reservations cannot be made before 10:30 AM.");
-      }
-      if (time > closingTime) {
-        errors.push("Reservations cannot be made after 9:30 PM.");
-      }
-      if (errors.length !== 0) throw new Error(errors.join(" AND "));
-
-      return true;
-    } catch (error) {
-      setTimeError(error);
-      return false;
-    }
-  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -71,15 +28,21 @@ export default function CreateReservation() {
         people: Number(formData.get("people")),
       },
     };
-    const date = DateTime.fromISO(
-      `${newReservation.data.reservation_date}T${newReservation.data.reservation_time}`
-    ); // .replaceAll, otherwise Date object moves to day previous of inputted
-    const time = DateTime.fromISO(newReservation.data.reservation_time);
+    
+    let isFutureTime = futureTimeValidator(newReservation.data.reservation_date, newReservation.data.reservation_time)
+    let isDuringBusinessHours = businessHoursValidator(newReservation.data.reservation_time)
+    let isTuesday = notTuesdayValidator(newReservation.data.reservation_date)
 
-    let isValidTime = timeValidator(time);
-    let isValidDate = dateValidator(date);
+    if (!isFutureTime) setFutureTimeError(new Error("Sorry, the reservation date and time must be in the future."))
+    else setFutureTimeError(null)
 
-    if (isValidDate && isValidTime) {
+    if (!isDuringBusinessHours) setBusinessHoursError(new Error("Sorry, reservations can only be made between the hours of 10:30am to 9:30pm."))
+    else setBusinessHoursError(null)
+
+    if (isTuesday) setTuesdayError(new Error("Sorry, no reservations can be made on Tuesdays. The restaurant is closed."))
+    else setTuesdayError(null)
+
+    if (isFutureTime && isDuringBusinessHours && !isTuesday){
       await createReservation(newReservation);
       history.push(`/dashboard?date=${formData.get("reservation_date")}`);
     }
@@ -95,9 +58,11 @@ export default function CreateReservation() {
   return (
     <>
       <h2 className="mb-4">Create new reservation</h2>
-      {(dateError || timeError) && (
-        <ErrorAlert error={dateError || timeError} />
-      )}
+
+      {futureTimeError && <ErrorAlert error={futureTimeError} />}
+      {tuesdayError && <ErrorAlert error={tuesdayError} />}
+      {businessHoursError && <ErrorAlert error={businessHoursError} />}
+      
       <ReservationForm
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
