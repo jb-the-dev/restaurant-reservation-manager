@@ -235,9 +235,12 @@ async function create(req, res) {
   res.status(201).json({ data: newReservation });
 }
 
-async function listByDate(req, res) {
-  let date = req.query.date;
-  res.json({ data: await service.listByDate(date) });
+async function listByDate(req, res, next) {
+  if (req.query.date) { 
+    let date = req.query.date;
+    res.json({ data: await service.listByDate(date) });
+  }
+  else next();
 }
 
 async function update(req, res) {
@@ -252,9 +255,18 @@ async function update(req, res) {
   res.json({ data: await service.update(updatedReservation) })
 }
 
+async function search(req, res, next) {
+  if (req.query.mobile_number) {
+    let mobile_number = req.query.mobile_number;
+    res.json({ data: await service.search(mobile_number) })
+  }
+  else next();
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   listByDate: asyncErrorBoundary(listByDate),
+  search: asyncErrorBoundary(search),
   read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
   create: [
     hasOnlyValidProperties,
