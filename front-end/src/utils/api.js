@@ -88,3 +88,7 @@ export async function createTable(newTable) {
 export async function unseatReservation(tableId){
   return axios.delete(`${API_BASE_URL}/tables/${tableId}/seat`)
 }
+
+export async function seatReservation(reservationId, config) {
+  return axios.put(`${API_BASE_URL}/reservations/${reservationId}/status`, config)
+}

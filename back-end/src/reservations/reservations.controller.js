@@ -177,7 +177,7 @@ function isValidPeopleProp(req, res, next) {
 }
 
 function hasBookedStatus(req, res, next) {
-  const { status = {} } = req.body.data;
+  const { status } = req.body.data;
 
   if (status) {
     if (status !== "booked") {
