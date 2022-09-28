@@ -286,5 +286,18 @@ module.exports = {
     isFinished,
     isValidUpdatedStatus,
     asyncErrorBoundary(update)
+  ],
+  update: [
+    asyncErrorBoundary(reservationExists),
+    hasOnlyValidProperties,
+    hasRequiredProperties,
+    isValidDateFormat,
+    isValidTime,
+    isValidPeopleProp,
+    isFutureDate,
+    isNotTuesday,
+    isTooEarly,
+    isTooLate,
+    asyncErrorBoundary(update)
   ]
 };
