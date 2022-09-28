@@ -33,13 +33,19 @@ export default function CreateReservation() {
     let isDuringBusinessHours = businessHoursValidator(newReservation.data.reservation_time)
     let isTuesday = notTuesdayValidator(newReservation.data.reservation_date)
 
-    if (!isFutureTime) setFutureTimeError(new Error("Sorry, the reservation date and time must be in the future."))
+    if (!isFutureTime) {
+      setFutureTimeError(new Error("Sorry, the reservation date and time must be in the future."))
+    }
     else setFutureTimeError(null)
 
-    if (!isDuringBusinessHours) setBusinessHoursError(new Error("Sorry, reservations can only be made between the hours of 10:30am to 9:30pm."))
+    if (!isDuringBusinessHours) {
+      setBusinessHoursError(new Error("Sorry, reservations can only be made between the hours of 10:30am to 9:30pm."))
+    }
     else setBusinessHoursError(null)
 
-    if (isTuesday) setTuesdayError(new Error("Sorry, no reservations can be made on Tuesdays. The restaurant is closed."))
+    if (isTuesday) {
+      setTuesdayError(new Error("Sorry, no reservations can be made on Tuesdays. The restaurant is closed."))
+    }
     else setTuesdayError(null)
 
     if (isFutureTime && isDuringBusinessHours && !isTuesday){
@@ -47,7 +53,7 @@ export default function CreateReservation() {
       history.push(`/dashboard?date=${formData.get("reservation_date")}`);
     }
 
-    //? will we need to make this handleSubmit work to also update existing reservations?
+    //? will we need to make this handleSubmit work to also update existing reservations? This question probably answered with US-08
   };
 
   const handleCancel = (event) => {
