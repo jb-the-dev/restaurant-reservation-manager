@@ -1,9 +1,14 @@
-export default function PreviousDay() {
-  //TODO add onClick functionality to change query param in url??
+import { useHistory } from "react-router"
+import { previous } from "../utils/date-time"
+
+export default function PreviousDay({ date }) {
+  const history = useHistory();
+  let previousDate = previous(date);
+
     return (
         <button 
         className="btn btn-secondary mr-3"
-        // onClick={}
-      >Previous Day</button>
+        onClick={() => history.push(`/dashboard?date=${previousDate}`)}
+      >&le; {previousDate}</button>
     )
 }

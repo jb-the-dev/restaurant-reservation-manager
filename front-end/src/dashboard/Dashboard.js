@@ -45,8 +45,8 @@ function Dashboard() {
       <ReservationList reservations={reservations} setReservations={setReservations}/>
       <TableList />
       <ErrorAlert error={reservationsError} />
-      <PreviousDay />
-      <NextDay />
+      <PreviousDay date={date}/>
+      <NextDay date={date}/>
 
     </main>
   );
