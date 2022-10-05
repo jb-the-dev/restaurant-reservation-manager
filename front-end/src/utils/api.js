@@ -74,7 +74,6 @@ export async function readReservation(reservationId){
 }
 
 export async function createReservation(newReservation) {
-  console.log("API newRes", newReservation)
   return axios.post(`${API_BASE_URL}/reservations`, newReservation)
 }
 

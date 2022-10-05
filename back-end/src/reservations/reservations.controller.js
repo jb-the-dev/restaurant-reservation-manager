@@ -55,7 +55,6 @@ function hasRequiredProperties(req, res, next) {
   const { data = {} } = req.body;
 
   VALID_PROPERTIES.forEach((property) => {
-    // console.log("property", property)
     if (!data[property]) {
       return next({
         status: 400,
@@ -223,7 +222,6 @@ async function list(req, res, next) {
 }
 
 async function read(req, res) {
-  // console.log("HELLO", res.locals.reservation)
   res.json({
     data: await service.read(req.params.reservation_id),
   });

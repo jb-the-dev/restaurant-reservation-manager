@@ -49,7 +49,6 @@ export default function CreateReservation() {
     else setTuesdayError(null)
 
     if (isFutureTime && isDuringBusinessHours && !isTuesday){
-      console.log("newRes", newReservation)
       await createReservation(newReservation);
       history.push(`/dashboard?date=${formData.get("reservation_date")}`);
     }
