@@ -12,12 +12,14 @@ export default function SeatReservation() {
   const history = useHistory();
 
   useEffect(() => {
+    const controller = new AbortController();
     async function getTableList() {
-      let response = await getTables();
+      let response = await getTables(controller.signal);
       let tablesData = response.data.data;
       setTables(tablesData);
     }
     getTableList();
+    return () => controller.abort();
   }, []);
 
   const handleSubmit = async (event) => {

@@ -20,8 +20,12 @@ export default function EditReservation() {
   const { reservation_id } = useParams();
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function fetchReservation() {
-      let fetchedData = await readReservation(reservation_id);
+      let fetchedData = await readReservation(reservation_id, {
+        signal: controller.signal 
+      });
       let shortFetch = fetchedData.data.data;
       shortFetch.reservation_date = formatAsDate(shortFetch.reservation_date)
       shortFetch.reservation_time = formatAsTime(shortFetch.reservation_time)
@@ -29,6 +33,7 @@ export default function EditReservation() {
     }
 
     fetchReservation();
+    return () => controller.abort();
   }, [reservation_id]);
 
   const handleSubmit = async (event) => {
@@ -79,13 +84,12 @@ export default function EditReservation() {
       );
     } else setTuesdayError(null);
 
-    async function updater(){
       if (isFutureTime && isDuringBusinessHours && !isTuesday) {
-        await updateReservation(reservation_id, updatedReservation);
+        const controller = new AbortController();
+        await updateReservation(reservation_id, updatedReservation, { signal: controller.signal });
         history.push(`/dashboard?date=${formData.get("reservation_date")}`);
+        return () => controller.abort();
       }
-    }
-    await updater();
   };
 
   return (

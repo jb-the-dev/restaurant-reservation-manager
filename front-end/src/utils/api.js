@@ -69,28 +69,34 @@ export async function listReservations(params, signal) {
     .then(formatReservationTime);
 }
 
-export async function readReservation(reservationId){
-  return axios.get(`${API_BASE_URL}/reservations/${reservationId}`)
+export async function readReservation(reservationId, signal){
+  return axios.get(`${API_BASE_URL}/reservations/${reservationId}`, signal)
 }
 
-export async function createReservation(newReservation) {
-  return axios.post(`${API_BASE_URL}/reservations`, newReservation)
+export async function createReservation(newReservation, signal) {
+  return axios.post(`${API_BASE_URL}/reservations`, newReservation, signal)
 }
 
-export async function updateReservation(reservationId, updatedReservation) {
-  return axios.put(`${API_BASE_URL}/reservations/${reservationId}`, updatedReservation)
+export async function updateReservation(reservationId, updatedReservation, signal) {
+  return axios.put(`${API_BASE_URL}/reservations/${reservationId}`, updatedReservation, signal)
 }
 
-export async function getTables(){
-  return axios.get(`${API_BASE_URL}/tables`)
+export async function getTables(signal){
+  return axios.get(`${API_BASE_URL}/tables`, signal)
 }
 
+export async function createTable(newTable, signal) {
+  return axios.post(`${API_BASE_URL}/tables`, newTable, signal)
+}
+
+// This changes the table object's status
 export async function seatTable(tableId, config) {
   return axios.put(`${API_BASE_URL}/tables/${tableId}/seat`, config)
 }
 
-export async function createTable(newTable) {
-  return axios.post(`${API_BASE_URL}/tables`, newTable)
+// This changes the reservation object's status
+export async function seatReservation(reservationId, config) {
+  return axios.put(`${API_BASE_URL}/reservations/${reservationId}/status`, config)
 }
 
 export async function unseatReservation(tableId){
@@ -98,9 +104,6 @@ export async function unseatReservation(tableId){
 }
 //TODO remove config from seatReservation in ReservationList.js, and refactor seatRes and cancelRes (below) to accept a status param as a string
 
-export async function seatReservation(reservationId, config) {
-  return axios.put(`${API_BASE_URL}/reservations/${reservationId}/status`, config)
-}
 
 export async function cancelReservation(reservationId) {
   const config = { data: { status: "cancelled" }}

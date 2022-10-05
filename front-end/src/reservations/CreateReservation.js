@@ -49,8 +49,10 @@ export default function CreateReservation() {
     else setTuesdayError(null)
 
     if (isFutureTime && isDuringBusinessHours && !isTuesday){
-      await createReservation(newReservation);
+      const controller = new AbortController();
+      await createReservation(newReservation, { signal: controller.signal });
       history.push(`/dashboard?date=${formData.get("reservation_date")}`);
+      return () => controller.abort();
     }
 
   };

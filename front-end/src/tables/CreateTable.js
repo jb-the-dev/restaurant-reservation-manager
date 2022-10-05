@@ -11,6 +11,7 @@ export default function CreateTable() {
     
         const form = event.currentTarget;
         const formData = new FormData(form);
+        const controller = new AbortController();
     
         const newTable = {
             data: {
@@ -20,8 +21,9 @@ export default function CreateTable() {
                 is_occupied: formData.get("is_occupied"),
             }
         }
-        await createTable(newTable)
+        await createTable(newTable, { signal: controller.signal })
         history.push("/dashboard")
+        return () => controller.abort();
     }
 
     const handleCancel = (event) => {

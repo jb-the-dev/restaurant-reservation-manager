@@ -8,12 +8,14 @@ export default function TableList() {
     const history = useHistory();
 
     useEffect(() => {
+        const controller = new AbortController()
         async function getTableList() {
-            let response = await getTables();
+            let response = await getTables(controller.signal);
             let tablesData = response.data.data
             setTables(tablesData)
         }
         getTableList();
+        return () => controller.abort();
     }, [])
 
     const handleFinish = async (table_id) => {
