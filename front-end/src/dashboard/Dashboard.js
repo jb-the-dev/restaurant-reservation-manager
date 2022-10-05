@@ -33,13 +33,7 @@ function Dashboard() {
     return () => abortController.abort();
   }
 
-
-  //TODO verify if Link tag will work on href test, or if need to use 'a' tag
-  //TODO 
-
   //TODO reformat "created_at" and "updated on" data to render more readably; take out the `T`, `Z`, and seconds values
-
-
 
   //* buttons below (next, previous) should take you to new URLs; do NOT change the current URL
   return (

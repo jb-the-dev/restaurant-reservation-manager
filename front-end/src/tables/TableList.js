@@ -11,7 +11,6 @@ export default function TableList() {
         async function getTableList() {
             let response = await getTables();
             let tablesData = response.data.data
-            // console.log("TABLES DATA", tablesData)
             setTables(tablesData)
         }
         getTableList();
@@ -41,7 +40,6 @@ export default function TableList() {
                 </button> 
                 : ""
             }
-            {/* {table.reservation_id} */}
         </li>
     ))
 

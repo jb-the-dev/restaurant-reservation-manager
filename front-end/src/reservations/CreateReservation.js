@@ -12,7 +12,7 @@ export default function CreateReservation() {
 
   const history = useHistory();
   
-  //TODO refactor dateValidator into utils folder; be mindful of state mgmt
+  //TODO refactor dateValidator(lines 32-55) into utils folder; be mindful of state mgmt; removes it from EditReservation as well!
 
   const handleSubmit = async (event) => {
     event.preventDefault();

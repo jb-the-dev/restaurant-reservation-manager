@@ -15,25 +15,13 @@ export default function SeatReservation() {
     async function getTableList() {
       let response = await getTables();
       let tablesData = response.data.data;
-      // console.log("TABLES DATA", tablesData)
       setTables(tablesData);
     }
     getTableList();
   }, []);
-  // let table = {
-  //     table_id: 7,
-  //     table_name: "high top",
-  //     capacity: 4
-  // }
-  //TODO pass reservation_id in using useParams
-
-  //TODO Figure out how to get table_id shown on <option>, into the HTTP request to the backend.
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // let foundTable = tables.find((table) => table.table_id === Number(tableId))
-    // console.log("tableId", tableId)
 
     const requestConfig = {
       data: {
@@ -46,12 +34,10 @@ export default function SeatReservation() {
     } catch(error) {
       console.error(error)
       setOccupiedError(error)
-      // set error, display error
     }
   };
 
   const handleTableIdChange = (event) => {
-    // console.log("event.target", event.target.value);
     setTableId(event.target.value)
   }
 

@@ -1,5 +1,3 @@
-// import { today } from "./date-time";
-
 export function businessHoursValidator(timeStr) {
   const timeNum = Number(timeStr.replace(":", ""));
   return (timeNum >= 1030 && timeNum <= 2130);

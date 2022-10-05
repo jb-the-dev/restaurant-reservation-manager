@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import ErrorAlert from "../layout/ErrorAlert";
 import { readReservation, updateReservation } from "../utils/api";
+import { formatAsDate, formatAsTime } from "../utils/date-time";
 import {
   businessHoursValidator,
   futureTimeValidator,
@@ -21,7 +22,10 @@ export default function EditReservation() {
   useEffect(() => {
     async function fetchReservation() {
       let fetchedData = await readReservation(reservation_id);
-      setCurrentReservation(fetchedData.data.data);
+      let shortFetch = fetchedData.data.data;
+      shortFetch.reservation_date = formatAsDate(shortFetch.reservation_date)
+      shortFetch.reservation_time = formatAsTime(shortFetch.reservation_time)
+      setCurrentReservation(shortFetch);
     }
 
     fetchReservation();

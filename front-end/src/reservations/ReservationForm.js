@@ -1,6 +1,3 @@
-// import { today } from "../utils/date-time";
-// keeping this import above to add a "min" later to `reservation_date` to further prevent user error
-
 import { useHistory } from "react-router";
 
 export default function ReservationForm({ handleSubmit, currentReservation }) {
@@ -17,7 +14,6 @@ const history = useHistory();
             name="first_name" 
             type="text" 
             className="form-control" 
-            // placeholder=""
             defaultValue={currentReservation?.first_name} 
             required />
         <label htmlFor="last_name" className="form-label">
@@ -39,9 +35,6 @@ const history = useHistory();
             name="mobile_number" 
             type="tel" 
             className="form-control"
-            // pattern="[0-9]{10}"
-            // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
-            // placeholder="Use no dashes and include area code, i.e. '1234567890'" 
             defaultValue={currentReservation?.mobile_number} 
             required />        
         <label htmlFor="reservation_date" className="form-label">
@@ -53,9 +46,6 @@ const history = useHistory();
             type="date" 
             className="form-control"
             defaultValue={currentReservation?.reservation_date}
-            // defaultValue={currentReservation?.reservation_date}  
-            // min={today()}
-            // required 
           />        
         <label htmlFor="reservation_time" className="form-label">
           Reservation Time
