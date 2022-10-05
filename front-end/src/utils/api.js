@@ -89,23 +89,16 @@ export async function createTable(newTable, signal) {
   return axios.post(`${API_BASE_URL}/tables`, newTable, signal)
 }
 
-// This changes the table object's status
 export async function seatTable(tableId, config) {
   return axios.put(`${API_BASE_URL}/tables/${tableId}/seat`, config)
 }
 
-// This changes the reservation object's status
-export async function seatReservation(reservationId, config) {
+// Changes status to seated or cancelled depending on string passed in
+export async function updateReservationStatus(reservationId, status) {
+  const config = { data : { status }}
   return axios.put(`${API_BASE_URL}/reservations/${reservationId}/status`, config)
 }
 
 export async function unseatReservation(tableId){
   return axios.delete(`${API_BASE_URL}/tables/${tableId}/seat`)
-}
-//TODO remove config from seatReservation in ReservationList.js, and refactor seatRes and cancelRes (below) to accept a status param as a string
-
-
-export async function cancelReservation(reservationId) {
-  const config = { data: { status: "cancelled" }}
-  return axios.put(`${API_BASE_URL}/reservations/${reservationId}/status`, config)
 }
