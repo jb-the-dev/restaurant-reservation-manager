@@ -1,4 +1,4 @@
-export default function CancelReservationButton({reservation_id, handleCancel}) {
+export default function CancelReservationButton({ reservation_id, handleCancel }) {
     //TODO modularize cancel button out of TableForm and ReservationForm components
     return (
         <button 

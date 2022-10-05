@@ -33,15 +33,6 @@ function Dashboard() {
     return () => abortController.abort();
   }
 
-  //TODO build handleCancel including a window.confirm() prompt
-  const handleCancel = (event) => {
-    event.preventDefault();
-    let confirmed = window.confirm("Do you want to cancel this reservation? This cannot be undone")
-    if (confirmed) {
-      //TODO throw logic in to axios.put() to change reservation status to "cancelled"
-    } 
-  }
-
 
   //TODO verify if Link tag will work on href test, or if need to use 'a' tag
   //TODO 
@@ -57,7 +48,7 @@ function Dashboard() {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {date === today() ? "Today" : date}</h4>
       </div>
-      <ReservationList reservations={reservations} handleCancel={handleCancel}/>
+      <ReservationList reservations={reservations} setReservations={setReservations}/>
       <TableList />
       <ErrorAlert error={reservationsError} />
       <PreviousDay />

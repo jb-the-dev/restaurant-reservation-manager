@@ -1,7 +1,10 @@
 // import { today } from "../utils/date-time";
 // keeping this import above to add a "min" later to `reservation_date` to further prevent user error
 
-export default function ReservationForm({handleSubmit, handleCancel }) {
+import { useHistory } from "react-router";
+
+export default function ReservationForm({ handleSubmit, currentReservation }) {
+const history = useHistory();
 
   return (
     <>
@@ -14,7 +17,8 @@ export default function ReservationForm({handleSubmit, handleCancel }) {
             name="first_name" 
             type="text" 
             className="form-control" 
-            placeholder="" 
+            // placeholder=""
+            defaultValue={currentReservation?.first_name} 
             required />
         <label htmlFor="last_name" className="form-label">
           Last Name
@@ -25,6 +29,7 @@ export default function ReservationForm({handleSubmit, handleCancel }) {
             type="text" 
             className="form-control" 
             placeholder="" 
+            defaultValue={currentReservation?.last_name} 
             required />        
         <label htmlFor="mobile_number" className="form-label">
           Mobile Number
@@ -34,9 +39,10 @@ export default function ReservationForm({handleSubmit, handleCancel }) {
             name="mobile_number" 
             type="tel" 
             className="form-control"
-            pattern="[0-9]{10}"
+            // pattern="[0-9]{10}"
             // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
-            placeholder="Use no dashes and include area code, i.e. '1234567890'" 
+            // placeholder="Use no dashes and include area code, i.e. '1234567890'" 
+            defaultValue={currentReservation?.mobile_number} 
             required />        
         <label htmlFor="reservation_date" className="form-label">
           Reservation Date
@@ -45,9 +51,12 @@ export default function ReservationForm({handleSubmit, handleCancel }) {
             id="reservation_date" 
             name="reservation_date" 
             type="date" 
-            className="form-control" 
+            className="form-control"
+            defaultValue={currentReservation?.reservation_date}
+            // defaultValue={currentReservation?.reservation_date}  
             // min={today()}
-            required />        
+            // required 
+          />        
         <label htmlFor="reservation_time" className="form-label">
           Reservation Time
         </label>
@@ -56,6 +65,7 @@ export default function ReservationForm({handleSubmit, handleCancel }) {
             name="reservation_time" 
             type="time" 
             className="form-control" 
+            defaultValue={currentReservation?.reservation_time} 
             required />        
         <label htmlFor="people" className="form-label">
           Group Size
@@ -68,9 +78,10 @@ export default function ReservationForm({handleSubmit, handleCancel }) {
             maxLength={2} 
             min={1}
             placeholder="" 
+            defaultValue={currentReservation?.people} 
             required />        
         <button type="submit" className="btn btn-primary mb-2">Submit</button>
-        <button className="btn btn-danger" onClick={handleCancel}>Cancel</button>
+        <button className="btn btn-danger" onClick={() => history.goBack()}>Cancel</button>
       </form>
     </>
   );

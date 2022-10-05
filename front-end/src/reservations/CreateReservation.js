@@ -49,11 +49,11 @@ export default function CreateReservation() {
     else setTuesdayError(null)
 
     if (isFutureTime && isDuringBusinessHours && !isTuesday){
+      console.log("newRes", newReservation)
       await createReservation(newReservation);
       history.push(`/dashboard?date=${formData.get("reservation_date")}`);
     }
 
-    //? will we need to make this handleSubmit work to also update existing reservations? This question probably answered with US-08
   };
 
   const handleCancel = (event) => {
@@ -72,7 +72,6 @@ export default function CreateReservation() {
       <ReservationForm
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
-        // reservationData={reservationInfo}
       />
     </>
   );
