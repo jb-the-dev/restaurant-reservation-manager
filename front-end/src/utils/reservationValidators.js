@@ -6,7 +6,7 @@ export function businessHoursValidator(timeStr) {
 export function futureTimeValidator(dateStr, timeStr) {
   let dateArr = dateStr.split("-");
   let timeArr = timeStr.split(":");
-  const todaysDate = new Date();
+  const today = new Date();
   let reservationDate = new Date(
     dateArr[0],
     dateArr[1] - 1,
@@ -15,7 +15,7 @@ export function futureTimeValidator(dateStr, timeStr) {
     timeArr[1]
   );
 
-  return reservationDate > todaysDate;
+  return reservationDate > today;
 }
 
 export function notTuesdayValidator(dateStr) {
