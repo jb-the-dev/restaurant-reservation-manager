@@ -7,13 +7,15 @@ import { updateReservationStatus } from "../utils/api";
 export default function ReservationList({ reservations, setReservations }) {
   const history = useHistory();
   const handleSeat = async (reservation_id) => {
-    await updateReservationStatus(reservation_id, "seated")
-  }
+    await updateReservationStatus(reservation_id, "seated");
+  };
 
   const handleCancel = async (reservation_id) => {
-    let confirmed = window.confirm("Do you want to cancel this reservation? This cannot be undone")
+    let confirmed = window.confirm(
+      "Do you want to cancel this reservation? This cannot be undone"
+    );
     if (confirmed) {
-      await updateReservationStatus(reservation_id, "cancelled")
+      await updateReservationStatus(reservation_id, "cancelled");
       setReservations(
         reservations.map((reservation) =>
           reservation.reservation_id === reservation_id
@@ -22,23 +24,35 @@ export default function ReservationList({ reservations, setReservations }) {
         )
       );
       history.go(0);
-    } 
-  }
+    }
+  };
 
-    return reservations.length === 0 
-      ? "No reservations for today yet... " 
-      : reservations.map(reservation => (
+  return reservations.length === 0
+    ? "No reservations for today yet... "
+    : reservations.map((reservation) => (
         <div className="card" key={reservation.reservation_id}>
-          <p>Name: {reservation.first_name} {reservation.last_name}</p>
+          <p>
+            Name: {reservation.first_name} {reservation.last_name}
+          </p>
           <p>Mobile number: {reservation.mobile_number}</p>
           <p>Party size: {reservation.people}</p>
           <p>Reservation time: {reservation.reservation_time}</p>
-          <p data-reservation-id-status={reservation.reservation_id}>Status: {reservation.status}</p>
+          <p data-reservation-id-status={reservation.reservation_id}>
+            Status: {reservation.status}
+          </p>
           <p>Created on: {reservation.created_at}</p>
           <p>Last updated on: {reservation.updated_at}</p>
           <EditReservationButton reservation_id={reservation.reservation_id} />
-          <CancelReservationButton reservation_id={reservation.reservation_id} handleCancel={() => handleCancel(reservation.reservation_id)}/>
-          {reservation.status === "booked" && <SeatTableButton onClick={() => handleSeat(reservation.reservation_id)} reservation_id={reservation.reservation_id}/>}
+          <CancelReservationButton
+            reservation_id={reservation.reservation_id}
+            handleCancel={() => handleCancel(reservation.reservation_id)}
+          />
+          {reservation.status === "booked" && (
+            <SeatTableButton
+              onClick={() => handleSeat(reservation.reservation_id)}
+              reservation_id={reservation.reservation_id}
+            />
+          )}
         </div>
-    ))
+      ));
 }

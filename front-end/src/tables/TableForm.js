@@ -1,8 +1,9 @@
-import SubmitButton from "../buttons/SubmitButton"
-import CancelTableButton from "../buttons/CancelTableButton"
+import FormSubmitButton from "../buttons/FormSubmitButton"
+import FormCancelButton from "../buttons/FormCancelButton";
 
 export default function TableForm({ handleSubmit, handleCancel }) {
   return (
+
     <form onSubmit={handleSubmit}>
       <label htmlFor="table_name" className="form-label">
         Table Name
@@ -15,7 +16,7 @@ export default function TableForm({ handleSubmit, handleCancel }) {
         placeholder=""
         minLength={2}
         required
-      />
+        />
       <label htmlFor="capacity" className="form-label">
         Capacity
       </label>
@@ -27,9 +28,9 @@ export default function TableForm({ handleSubmit, handleCancel }) {
         placeholder=""
         min={1}
         required
-      />
-        <SubmitButton />
-        <CancelTableButton handleCancel={handleCancel} />
+        />
+        <FormSubmitButton />
+        <FormCancelButton />
     </form>
   );
 }

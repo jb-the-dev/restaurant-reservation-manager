@@ -1,11 +1,10 @@
-import { useHistory } from "react-router";
+import FormCancelButton from "../buttons/FormCancelButton";
+import FormSubmitButton from "../buttons/FormSubmitButton";
 
 export default function ReservationForm({ handleSubmit, currentReservation }) {
-const history = useHistory();
 
   return (
-    <>
-      <form className="card" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="first_name" className="form-label">
           First Name
         </label>
@@ -70,9 +69,8 @@ const history = useHistory();
             placeholder="" 
             defaultValue={currentReservation?.people} 
             required />        
-        <button type="submit" className="btn btn-primary mb-2">Submit</button>
-        <button className="btn btn-danger" onClick={() => history.goBack()}>Cancel</button>
+        <FormSubmitButton />
+        <FormCancelButton />
       </form>
-    </>
   );
 }

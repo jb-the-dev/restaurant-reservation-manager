@@ -25,14 +25,10 @@ export default function CreateTable() {
         return () => controller.abort();
     }
 
-    const handleCancel = (event) => {
-        history.goBack()
-    }
-
     return (
         <>
             <h1>Create a Table</h1>
-            <TableForm handleSubmit={handleSubmit} handleCancel={handleCancel} />
+            <TableForm handleSubmit={handleSubmit} />
         </>
     )
 }

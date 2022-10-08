@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import CancelTableButton from "../buttons/CancelTableButton";
+import FormCancelButton from "../buttons/FormCancelButton";
+import FormSubmitButton from "../buttons/FormSubmitButton";
 import ErrorAlert from "../layout/ErrorAlert";
 import { getTables, seatTable } from "../utils/api";
 
@@ -61,10 +62,9 @@ export default function SeatReservation() {
                 </option>
                 ))}
             </select>
-            <button className="btn btn-primary" type="submit">
-                Submit
-            </button>
-            <CancelTableButton />
+            <FormSubmitButton />
+            <FormCancelButton />
+
         </form>
     </>
   );
