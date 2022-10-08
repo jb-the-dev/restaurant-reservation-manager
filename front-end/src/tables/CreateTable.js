@@ -18,7 +18,6 @@ export default function CreateTable() {
                 table_name: formData.get("table_name"),
                 capacity: Number(formData.get("capacity")),
                 reservation_id: formData.get("reservation_id"),
-                is_occupied: formData.get("is_occupied"),
             }
         }
         await createTable(newTable, { signal: controller.signal })

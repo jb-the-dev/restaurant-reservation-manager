@@ -122,7 +122,6 @@ async function groupFitsAtTable(req, res, next) {
   });
 }
 
-//TODO remove the bonus "is_occupied" field from the seed json file, the migration file, and re-migrate tables
 // NB! this validator is paired with seating tables
 function isOccupied(req, res, next) {
   const table = res.locals.table;
