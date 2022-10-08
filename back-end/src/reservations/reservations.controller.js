@@ -89,7 +89,7 @@ function isFutureDate(req, res, next) {
 
   const date = DateTime.fromISO(`${data.reservation_date}T${data.reservation_time}`)
   // const date = new Date(data.reservation_date.replaceAll("-", "/"));
-
+  console.log("INPUT", date, 'DATETIME.NOW', DateTime.now())
   if (date < DateTime.now()) {
     return next({
       status: 400,
