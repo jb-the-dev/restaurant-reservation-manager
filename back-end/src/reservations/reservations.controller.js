@@ -87,43 +87,9 @@ function isValidDateFormat(req, res, next) {
 function isFutureDate(req, res, next) {
   const { data = {} } = req.body;
 
-  // let dateArr = data.reservation_date.split("-")
-  // let timeArr = data.reservation_time.split(":")
-
-  // const today = new Date();
-  // let reservationDateTime = new Date(
-  //   dateArr[0],
-  //   dateArr[1] - 1,
-  //   dateArr[2],
-  //   timeArr[0],
-  //   timeArr[1]
-  // );
-
-  // console.log("today", today)
-  // console.log("reservationDateTime", reservationDateTime)
-
-  // if (reservationDateTime < today) {
-  //   return next({
-  //     status: 400,
-  //     message: `Please make sure to pick a date in the future.`,
-  //   });
-  // };
-
   const dateTimeData = DateTime.fromISO(`${data.reservation_date}T${data.reservation_time}`)
 
-  const now = DateTime.now()
-  console.log("INPUT", dateTimeData.c, 'DATETIME.NOW', now.c)
-  // const diff = now.diff(dateTimeData, ["days", "hours", "minutes"])
-  // console.log("DIFF", diff.values)
-  // const diffObj = diff.toObject()
-  // console.log("diff OBJ", diff.toObject())
-  // const valuesArr = Object.values(diffObj)
-  // console.log("diffArr", valuesArr)
-  // valuesArr.forEach(value => {
-  //   if(value > 0) console.log("no can do")
-  // })
-
-  if (dateTimeData < now) {
+  if (dateTimeData < DateTime.now()) {
     return next({
       status: 400,
       message: `Please make sure to pick a date in the future.`,
