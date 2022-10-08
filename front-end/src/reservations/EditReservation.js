@@ -3,11 +3,7 @@ import { useHistory, useParams } from "react-router";
 import ErrorAlert from "../layout/ErrorAlert";
 import { readReservation, updateReservation } from "../utils/api";
 import { formatAsDate, formatAsTime } from "../utils/date-time";
-import {
-  businessHoursValidator,
-  futureTimeValidator,
-  notTuesdayValidator,
-} from "../utils/reservationValidators";
+import reservationValidator from "../utils/reservationValidator";
 import ReservationForm from "./ReservationForm";
 
 export default function EditReservation() {
@@ -24,11 +20,11 @@ export default function EditReservation() {
 
     async function fetchReservation() {
       let fetchedData = await readReservation(reservation_id, {
-        signal: controller.signal 
+        signal: controller.signal,
       });
       let shortFetch = fetchedData.data.data;
-      shortFetch.reservation_date = formatAsDate(shortFetch.reservation_date)
-      shortFetch.reservation_time = formatAsTime(shortFetch.reservation_time)
+      shortFetch.reservation_date = formatAsDate(shortFetch.reservation_date);
+      shortFetch.reservation_time = formatAsTime(shortFetch.reservation_time);
       setCurrentReservation(shortFetch);
     }
 
@@ -51,45 +47,22 @@ export default function EditReservation() {
       },
     };
 
-    let isFutureTime = await futureTimeValidator(
+    let isValidReservation = reservationValidator(
       updatedReservation.data.reservation_date,
-      updatedReservation.data.reservation_time
-    );
-    let isDuringBusinessHours = await businessHoursValidator(
-      updatedReservation.data.reservation_time
-    );
-    let isTuesday = await notTuesdayValidator(
-      updatedReservation.data.reservation_date
+      updatedReservation.data.reservation_time,
+      setFutureTimeError,
+      setBusinessHoursError,
+      setTuesdayError
     );
 
-    if (!isFutureTime) {
-      setFutureTimeError(
-        new Error("Sorry, the reservation date and time must be in the future.")
-      );
-    } else setFutureTimeError(null);
-
-    if (!isDuringBusinessHours) {
-      setBusinessHoursError(
-        new Error(
-          "Sorry, reservations can only be made between the hours of 10:30am to 9:30pm."
-        )
-      );
-    } else setBusinessHoursError(null);
-
-    if (isTuesday) {
-      setTuesdayError(
-        new Error(
-          "Sorry, no reservations can be made on Tuesdays. The restaurant is closed."
-        )
-      );
-    } else setTuesdayError(null);
-
-      if (isFutureTime && isDuringBusinessHours && !isTuesday) {
-        const controller = new AbortController();
-        await updateReservation(reservation_id, updatedReservation, { signal: controller.signal });
-        history.push(`/dashboard?date=${formData.get("reservation_date")}`);
-        return () => controller.abort();
-      }
+    if (isValidReservation) {
+      const controller = new AbortController();
+      await updateReservation(reservation_id, updatedReservation, {
+        signal: controller.signal,
+      });
+      history.push(`/dashboard?date=${formData.get("reservation_date")}`);
+      return () => controller.abort();
+    }
   };
 
   return (
