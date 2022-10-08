@@ -88,10 +88,12 @@ function isFutureDate(req, res, next) {
   const { data = {} } = req.body;
 
   const date = DateTime.fromISO(`${data.reservation_date}T${data.reservation_time}`)
+  const utc = date.toUTC();
   // const date = new Date(data.reservation_date.replaceAll("-", "/"));
   const now = DateTime.now()
   console.log("INPUT", date, 'DATETIME.NOW', now)
   console.log("NOW'S ZONE", now.zoneName)
+  console.log("DATE'S ZONE = UTC??", utc)
   if (date < DateTime.now()) {
     return next({
       status: 400,
