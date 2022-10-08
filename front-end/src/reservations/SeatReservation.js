@@ -17,7 +17,8 @@ export default function SeatReservation() {
     async function getTableList() {
       let response = await getTables(controller.signal);
       let tablesData = response.data.data;
-      setTables(tablesData);
+      let openTables = tablesData.filter(table => !table.reservation_id)
+      setTables(openTables);
     }
     getTableList();
     return () => controller.abort();
@@ -45,9 +46,9 @@ export default function SeatReservation() {
   }
 
   return (
-    <>
+    <div className="form-container m-10">
         <ErrorAlert error={occupiedError}/>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="opacity-layer m-10">
             <label htmlFor="table_id">Table Number:</label>
             <select
                 id="table_id"
@@ -66,6 +67,6 @@ export default function SeatReservation() {
             <FormCancelButton />
 
         </form>
-    </>
+    </div>
   );
 }
