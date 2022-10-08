@@ -2,3 +2,10 @@
   background-color: #393a44;
   min-width: 200px;
 }
+
+.backdrop {
+  background-image: url("../images/backdrop.jpg");
+  background-size:contain;
+  /* filter: blur(8px); */
+  backdrop-filter: blur(5px);
+}

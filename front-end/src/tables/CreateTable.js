@@ -26,9 +26,9 @@ export default function CreateTable() {
     }
 
     return (
-        <>
-            <h1>Create a Table</h1>
+        <div className="fade-background">
+            <h1 className="ml-4">Create a Table</h1>
             <TableForm handleSubmit={handleSubmit} />
-        </>
+        </div>
     )
 }

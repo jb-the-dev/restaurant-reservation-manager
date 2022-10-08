@@ -1,0 +1,31 @@
+.form-container {
+
+  display: flex;
+  flex-direction: column;
+
+  /* max-width: 75%; */
+  /* align-content: center; */
+  align-items: center;
+}
+
+.form-field {
+  opacity: 1;
+  min-width: 160px;
+  width: 400px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  font-weight:700;
+}
+
+/* This section holds classes for creating visual contrast on form pages */
+.opacity-layer {
+  background-color: rgb(220, 220, 220, 0.9);
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.fade-background {
+  backdrop-filter: blur(4px);
+  background-color: transparent;
+}

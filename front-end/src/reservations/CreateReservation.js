@@ -63,8 +63,8 @@ export default function CreateReservation() {
   };
 
   return (
-    <>
-      <h2 className="mb-4">Create new reservation</h2>
+    <div className="fade-background">
+      <h1 className="mb-4 text-center">Create new reservation</h1>
 
       {futureTimeError && <ErrorAlert error={futureTimeError} />}
       {tuesdayError && <ErrorAlert error={tuesdayError} />}
@@ -74,6 +74,6 @@ export default function CreateReservation() {
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
       />
-    </>
+    </div>
   );
 }

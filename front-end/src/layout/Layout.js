@@ -18,7 +18,7 @@ function Layout() {
         <div className="col-md-2 side-bar">
           <Menu />
         </div>
-        <div className="col">
+        <div className="col backdrop p-0">
           <Routes />
         </div>
       </div>

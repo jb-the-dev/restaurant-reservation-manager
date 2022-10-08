@@ -93,8 +93,8 @@ export default function EditReservation() {
   };
 
   return (
-    <>
-      <h2>Edit the reservation</h2>
+    <div className="fade-background">
+      <h1>Edit the reservation</h1>
       <br />
 
       {futureTimeError && <ErrorAlert error={futureTimeError} />}
@@ -105,6 +105,6 @@ export default function EditReservation() {
         handleSubmit={handleSubmit}
         currentReservation={currentReservation}
       />
-    </>
+    </div>
   );
 }
