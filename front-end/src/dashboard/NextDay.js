@@ -7,7 +7,7 @@ export default function NextDay({ date }) {
 
     return (
         <button 
-        className="btn btn-primary"
+        className="btn btn-dark"
         onClick={() => history.push(`/dashboard?date=${nextDate}`)}
       >{nextDate} &gt;</button>
     )

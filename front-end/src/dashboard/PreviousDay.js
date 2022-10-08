@@ -7,7 +7,7 @@ export default function PreviousDay({ date }) {
 
     return (
         <button 
-        className="btn btn-secondary mr-3"
+        className="btn btn-dark mr-3"
         onClick={() => history.push(`/dashboard?date=${previousDate}`)}
       >&le; {previousDate}</button>
     )

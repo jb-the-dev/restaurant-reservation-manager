@@ -26,7 +26,7 @@ export default function ReservationList({ reservations, setReservations }) {
   };
 
   return reservations.length === 0
-    ? "No reservations for today yet... "
+    ? <div className="opacity-layer">No reservations for today yet...</div>
     : reservations.map((reservation) => (
         <ReservationItem
           handleCancel={handleCancel}

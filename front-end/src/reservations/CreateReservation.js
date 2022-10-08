@@ -64,7 +64,7 @@ export default function CreateReservation() {
 
   return (
     <div className="fade-background">
-      <h1 className="mb-4 text-center">Create new reservation</h1>
+      <h1 className="mb-4 text-center title-layer">Create new reservation</h1>
 
       {futureTimeError && <ErrorAlert error={futureTimeError} />}
       {tuesdayError && <ErrorAlert error={tuesdayError} />}

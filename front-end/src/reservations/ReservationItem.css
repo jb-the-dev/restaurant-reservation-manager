@@ -1,0 +1,7 @@
+.reservation-card {
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    font-weight: 700;
+}
