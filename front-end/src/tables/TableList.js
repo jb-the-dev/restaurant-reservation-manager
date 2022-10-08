@@ -32,13 +32,27 @@ export default function TableList() {
   };
 
   const tablesList = tables.map((table) => (
-    <TableItem table={table} handleFinish={handleFinish} />
+    <TableItem key={table.table_id} table={table} handleFinish={handleFinish} />
   ));
 
   return (
     <>
-      <h2>Tables</h2>
-      {tables.length === 0 ? "Loading list of tables..." : tablesList}
+      <h3 className="d-md-flex title-layer">Tables</h3>
+      <div className="d-md-flex mb-3 container">
+        <table className="table opacity-layer">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Finish?</th>
+              <th scope="col">Table</th>
+              <th scope="col">Capacity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tables.length === 0 ? "Loading list of tables..." : tablesList}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

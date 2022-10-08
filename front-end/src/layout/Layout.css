@@ -1,11 +1,10 @@
 .side-bar {
-  background-color: #393a44;
+  background-image: linear-gradient(180deg, rgba(55, 104, 114, 1), rgba(55, 104, 114, 0.5));
   min-width: 200px;
 }
 
 .backdrop {
   background-image: url("../images/backdrop.jpg");
   background-size:contain;
-  /* filter: blur(8px); */
   backdrop-filter: blur(5px);
 }

@@ -7,6 +7,7 @@ import PreviousDay from "./PreviousDay";
 import NextDay from "./NextDay";
 import ReservationList from "../reservations/ReservationList";
 import TableList from "../tables/TableList";
+import "./Dashboard.css"
 
 /**
  * Defines the dashboard page.
@@ -37,16 +38,23 @@ function Dashboard() {
 
   //* buttons below (next, previous) should take you to new URLs; do NOT change the current URL
   return (
-    <main>
+    <main className="dashboard-container">
       <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {date === today() ? "Today" : date}</h4>
+      <div className="d-md-flex title-layer">
+        <h3>Reservations for {date === today() ? "Today" : date}</h3>
       </div>
+
+      <div className="d-md-flex mx-2 my-4">
       <ReservationList reservations={reservations} setReservations={setReservations}/>
-      <TableList />
-      <ErrorAlert error={reservationsError} />
+      </div>
+
       <PreviousDay date={date}/>
       <NextDay date={date}/>
+
+        
+      <TableList />
+
+      <ErrorAlert error={reservationsError} />
 
     </main>
   );
