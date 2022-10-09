@@ -1,7 +1,7 @@
 import { useHistory } from "react-router";
 import { next } from "../utils/date-time";
 
-export default function NextDay({ date }) {
+export default function NextDayButton({ date }) {
   const history = useHistory();
   let nextDate = next(date)
 

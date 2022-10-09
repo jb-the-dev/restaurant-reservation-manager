@@ -3,11 +3,12 @@ import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
-import PreviousDay from "./PreviousDay";
-import NextDay from "./NextDay";
+import PreviousDayButton from "../buttons/PreviousDayButton";
+import NextDayButton from "../buttons/NextDayButton";
 import ReservationList from "../reservations/ReservationList";
 import TableList from "../tables/TableList";
 import "./Dashboard.css";
+import TodayButton from "../buttons/TodayButton";
 
 /**
  * Defines the dashboard page.
@@ -49,8 +50,9 @@ function Dashboard() {
 
       <div className="opacity-layer">
 
-      <PreviousDay date={date} />
-      <NextDay date={date} />
+      <PreviousDayButton date={date} />
+      <TodayButton />
+      <NextDayButton date={date} />
       </div>
 
       <TableList />
