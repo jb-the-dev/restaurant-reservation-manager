@@ -2,7 +2,7 @@ export default function TableItem({ table, handleFinish }) {
   return (
     <tr>
       <td data-table-id-status={`${table.table_id}`}>
-        Current Status: {table.reservation_id ? "Occupied" : "Free"}
+        {table.reservation_id ? "Occupied" : "Free"}
       </td>
       <td>
         {table.reservation_id ? (

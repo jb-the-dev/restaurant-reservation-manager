@@ -38,12 +38,12 @@ export default function TableList() {
   return (
     <>
       <h3 className="d-md-flex title-layer">Tables</h3>
-      <div className="d-md-flex mb-3 container">
+      <div className="mb-3 container">
         <table className="table opacity-layer">
           <thead>
             <tr>
-              <th scope="col"></th>
-              <th scope="col">Finish?</th>
+              <th scope="col">Status</th>
+              <th scope="col">Finish</th>
               <th scope="col">Table</th>
               <th scope="col">Capacity</th>
             </tr>
