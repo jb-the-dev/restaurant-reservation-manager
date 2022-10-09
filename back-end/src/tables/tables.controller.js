@@ -141,9 +141,9 @@ function isNotOccupied(req, res, next) {
   if (!table.reservation_id)
     return next({
       status: 400,
-      message: `Table ${table_id} is not occupied already.`
-    })
-  return next()
+      message: `Table ${table_id} is not occupied already.`,
+    });
+  return next();
 }
 
 function reservationAlreadySeated(req, res, next) {
@@ -152,10 +152,10 @@ function reservationAlreadySeated(req, res, next) {
   if (status === "seated") {
     next({
       status: 400,
-      message: "This reservation is already seated."
-    })
+      message: "This reservation is already seated.",
+    });
   }
-  next()
+  next();
 }
 
 // HANDLERS
@@ -186,7 +186,7 @@ async function update(req, res) {
 async function unseat(req, res, next) {
   const { table } = res.locals;
 
-  res.json({ data: await service.unseatReservation(table.reservation_id) })
+  res.json({ data: await service.unseatReservation(table.reservation_id) });
 }
 
 module.exports = {
@@ -210,8 +210,8 @@ module.exports = {
     asyncErrorBoundary(update),
   ],
   unseat: [
-    asyncErrorBoundary(tableExists), 
+    asyncErrorBoundary(tableExists),
     isNotOccupied,
-    asyncErrorBoundary(unseat)
-  ]
+    asyncErrorBoundary(unseat),
+  ],
 };

@@ -87,7 +87,9 @@ function isValidDateFormat(req, res, next) {
 function isFutureDate(req, res, next) {
   const { data = {} } = req.body;
 
-  const dateTimeData = DateTime.fromISO(`${data.reservation_date}T${data.reservation_time}`)
+  const dateTimeData = DateTime.fromISO(
+    `${data.reservation_date}T${data.reservation_time}`
+  );
 
   if (dateTimeData < DateTime.now()) {
     return next({
@@ -116,29 +118,29 @@ function isNotTuesday(req, res, next) {
 
 function isTooEarly(req, res, next) {
   const { data = {} } = req.body;
-  const time = DateTime.fromISO(data.reservation_time)
+  const time = DateTime.fromISO(data.reservation_time);
   const openingTime = DateTime.fromISO("10:30");
-  
+
   if (time < openingTime) {
     return next({
       status: 400,
-      message: `Reservation time of ${data.reservation_time} is too early.`
-    })
+      message: `Reservation time of ${data.reservation_time} is too early.`,
+    });
   }
   next();
 }
 
 function isTooLate(req, res, next) {
   const { data = {} } = req.body;
-  const time = DateTime.fromISO(data.reservation_time)
+  const time = DateTime.fromISO(data.reservation_time);
 
   const kitchenClosingTime = DateTime.fromISO("21:30");
-  
+
   if (time > kitchenClosingTime) {
     return next({
       status: 400,
-      message: `Reservation time of ${data.reservation_time} is too late.`
-    })
+      message: `Reservation time of ${data.reservation_time} is too late.`,
+    });
   }
   next();
 }
@@ -187,27 +189,27 @@ function hasBookedStatus(req, res, next) {
   } else next();
 }
 
-function isValidUpdatedStatus(req, res, next){
+function isValidUpdatedStatus(req, res, next) {
   const { status = {} } = req.body.data;
-  const validStatuses = ["booked", "finished", "seated", "cancelled"]
+  const validStatuses = ["booked", "finished", "seated", "cancelled"];
 
-    if (!validStatuses.includes(status)){
-      next({
-        status: 400,
-        message: `The reservation status ${status} is invalid.`
-      })
-    }
-    next();
+  if (!validStatuses.includes(status)) {
+    next({
+      status: 400,
+      message: `The reservation status ${status} is invalid.`,
+    });
+  }
+  next();
 }
 
 function isFinished(req, res, next) {
   const { status } = res.locals.reservation;
-  if (status === "finished") 
+  if (status === "finished")
     return next({
       status: 400,
-      message: "This reservation is already finished."
-    })
-  next()
+      message: "This reservation is already finished.",
+    });
+  next();
 }
 
 // HANDLERS
@@ -216,7 +218,7 @@ function isFinished(req, res, next) {
  * List handler for reservation resources
  */
 async function list(req, res, next) {
-  if (req.query) return next()
+  if (req.query) return next();
   else res.json({ data: await service.list() });
 }
 
@@ -233,11 +235,10 @@ async function create(req, res) {
 }
 
 async function listByDate(req, res, next) {
-  if (req.query.date) { 
+  if (req.query.date) {
     let date = req.query.date;
     res.json({ data: await service.listByDate(date) });
-  }
-  else next();
+  } else next();
 }
 
 async function update(req, res) {
@@ -246,18 +247,17 @@ async function update(req, res) {
 
   const updatedReservation = {
     ...updatedReservationData,
-    reservation_id: reservation_id
-  }
+    reservation_id: reservation_id,
+  };
 
-  res.json({ data: await service.update(updatedReservation) })
+  res.json({ data: await service.update(updatedReservation) });
 }
 
 async function search(req, res, next) {
   if (req.query.mobile_number) {
     let mobile_number = req.query.mobile_number;
-    res.json({ data: await service.search(mobile_number) })
-  }
-  else next();
+    res.json({ data: await service.search(mobile_number) });
+  } else next();
 }
 
 module.exports = {
@@ -282,7 +282,7 @@ module.exports = {
     asyncErrorBoundary(reservationExists),
     isFinished,
     isValidUpdatedStatus,
-    asyncErrorBoundary(update)
+    asyncErrorBoundary(update),
   ],
   update: [
     asyncErrorBoundary(reservationExists),
@@ -295,6 +295,6 @@ module.exports = {
     isNotTuesday,
     isTooEarly,
     isTooLate,
-    asyncErrorBoundary(update)
-  ]
+    asyncErrorBoundary(update),
+  ],
 };

@@ -49,10 +49,9 @@ function Dashboard() {
       </div>
 
       <div className="opacity-layer">
-
-      <PreviousDayButton date={date} />
-      <TodayButton />
-      <NextDayButton date={date} />
+        <PreviousDayButton date={date} />
+        <TodayButton />
+        <NextDayButton date={date} />
       </div>
 
       <TableList />
