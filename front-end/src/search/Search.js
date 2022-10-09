@@ -19,7 +19,7 @@ export default function Search() {
   };
 
   return (
-    <div className="search">
+    <div>
       <h2 className="title-layer">Phone Number Lookup</h2>
 
       <div className="container">

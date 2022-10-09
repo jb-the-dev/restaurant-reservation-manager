@@ -1,7 +1,7 @@
 .reservation-name {
-    min-width: 160px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    font-weight: 700;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  font-weight: 700;
 }

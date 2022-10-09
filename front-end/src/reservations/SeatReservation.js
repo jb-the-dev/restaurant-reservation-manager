@@ -7,8 +7,8 @@ import { getTables, seatTable } from "../utils/api";
 
 export default function SeatReservation() {
   const [tables, setTables] = useState([]);
-  const [tableId, setTableId] = useState(0)
-  const [occupiedError, setOccupiedError] = useState("")
+  const [tableId, setTableId] = useState(0);
+  const [occupiedError, setOccupiedError] = useState("");
   const { reservation_id } = useParams();
   const history = useHistory();
 
@@ -17,7 +17,7 @@ export default function SeatReservation() {
     async function getTableList() {
       let response = await getTables(controller.signal);
       let tablesData = response.data.data;
-      let openTables = tablesData.filter(table => !table.reservation_id)
+      let openTables = tablesData.filter((table) => !table.reservation_id);
       setTables(openTables);
     }
     getTableList();
@@ -33,40 +33,39 @@ export default function SeatReservation() {
       },
     };
     try {
-      await seatTable(tableId, requestConfig)
-      history.push("/dashboard")
-    } catch(error) {
-      console.error(error)
-      setOccupiedError(error)
+      await seatTable(tableId, requestConfig);
+      history.push("/dashboard");
+    } catch (error) {
+      console.error(error);
+      setOccupiedError(error);
     }
   };
 
   const handleTableIdChange = (event) => {
-    setTableId(event.target.value)
-  }
+    setTableId(event.target.value);
+  };
 
   return (
     <div className="form-container m-10">
-        <ErrorAlert error={occupiedError}/>
-        <form onSubmit={handleSubmit} className="opacity-layer m-10">
-            <label htmlFor="table_id">Table Number:</label>
-            <select
-                id="table_id"
-                name="table_id"
-                value={tableId}
-                onChange={handleTableIdChange}
-                >
-                <option>Pick a table</option>
-                {tables.map((table) => (
-                    <option key={table.table_id} value={table.table_id}>
-                    {table.table_name} - {table.capacity}
-                </option>
-                ))}
-            </select>
-            <FormSubmitButton />
-            <FormCancelButton />
-
-        </form>
+      <ErrorAlert error={occupiedError} />
+      <form onSubmit={handleSubmit} className="opacity-layer m-10">
+        <label htmlFor="table_id">Table Number:</label>
+        <select
+          id="table_id"
+          name="table_id"
+          value={tableId}
+          onChange={handleTableIdChange}
+        >
+          <option>Pick a table</option>
+          {tables.map((table) => (
+            <option key={table.table_id} value={table.table_id}>
+              {table.table_name} - {table.capacity}
+            </option>
+          ))}
+        </select>
+        <FormSubmitButton />
+        <FormCancelButton />
+      </form>
     </div>
   );
 }

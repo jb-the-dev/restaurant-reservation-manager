@@ -25,14 +25,16 @@ export default function ReservationList({ reservations, setReservations }) {
     }
   };
 
-  return reservations.length === 0
-    ? <div className="opacity-layer">No reservations for today yet...</div>
-    : reservations.map((reservation) => (
-        <ReservationItem
-          key={reservation.reservation_id}
-          handleCancel={handleCancel}
-          handleSeat={handleSeat}
-          reservation={reservation}
-        />
-      ));
+  return reservations.length === 0 ? (
+    <div className="opacity-layer">No reservations for today yet...</div>
+  ) : (
+    reservations.map((reservation) => (
+      <ReservationItem
+        key={reservation.reservation_id}
+        handleCancel={handleCancel}
+        handleSeat={handleSeat}
+        reservation={reservation}
+      />
+    ))
+  );
 }

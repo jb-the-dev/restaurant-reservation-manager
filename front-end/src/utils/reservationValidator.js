@@ -37,5 +37,5 @@ export default async function reservationValidator(
     );
   } else setTuesdayError(null);
 
-  return (isFutureTime && isDuringBusinessHours && !isTuesday);
+  return isFutureTime && isDuringBusinessHours && !isTuesday;
 }

@@ -69,36 +69,47 @@ export async function listReservations(params, signal) {
     .then(formatReservationTime);
 }
 
-export async function readReservation(reservationId, signal){
-  return axios.get(`${API_BASE_URL}/reservations/${reservationId}`, signal)
+export async function readReservation(reservationId, signal) {
+  return axios.get(`${API_BASE_URL}/reservations/${reservationId}`, signal);
 }
 
 export async function createReservation(newReservation, signal) {
-  return axios.post(`${API_BASE_URL}/reservations`, newReservation, signal)
+  return axios.post(`${API_BASE_URL}/reservations`, newReservation, signal);
 }
 
-export async function updateReservation(reservationId, updatedReservation, signal) {
-  return axios.put(`${API_BASE_URL}/reservations/${reservationId}`, updatedReservation, signal)
+export async function updateReservation(
+  reservationId,
+  updatedReservation,
+  signal
+) {
+  return axios.put(
+    `${API_BASE_URL}/reservations/${reservationId}`,
+    updatedReservation,
+    signal
+  );
 }
 
-export async function getTables(signal){
-  return axios.get(`${API_BASE_URL}/tables`, signal)
+export async function getTables(signal) {
+  return axios.get(`${API_BASE_URL}/tables`, signal);
 }
 
 export async function createTable(newTable, signal) {
-  return axios.post(`${API_BASE_URL}/tables`, newTable, signal)
+  return axios.post(`${API_BASE_URL}/tables`, newTable, signal);
 }
 
 export async function seatTable(tableId, config) {
-  return axios.put(`${API_BASE_URL}/tables/${tableId}/seat`, config)
+  return axios.put(`${API_BASE_URL}/tables/${tableId}/seat`, config);
 }
 
 // Changes status to seated or cancelled depending on string passed in
 export async function updateReservationStatus(reservationId, status) {
-  const config = { data : { status }}
-  return axios.put(`${API_BASE_URL}/reservations/${reservationId}/status`, config)
+  const config = { data: { status } };
+  return axios.put(
+    `${API_BASE_URL}/reservations/${reservationId}/status`,
+    config
+  );
 }
 
-export async function unseatReservation(tableId){
-  return axios.delete(`${API_BASE_URL}/tables/${tableId}/seat`)
+export async function unseatReservation(tableId) {
+  return axios.delete(`${API_BASE_URL}/tables/${tableId}/seat`);
 }

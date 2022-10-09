@@ -48,9 +48,7 @@ export default function TableList() {
               <th scope="col">Capacity</th>
             </tr>
           </thead>
-          <tbody>
-            {tablesList}
-          </tbody>
+          <tbody>{tablesList}</tbody>
         </table>
       </div>
     </>

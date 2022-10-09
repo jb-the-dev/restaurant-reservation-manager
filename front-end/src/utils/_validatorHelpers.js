@@ -1,6 +1,6 @@
 export function businessHoursValidator(timeStr) {
   const timeNum = Number(timeStr.replace(":", ""));
-  return (timeNum >= 1030 && timeNum <= 2130);
+  return timeNum >= 1030 && timeNum <= 2130;
 }
 
 export function futureTimeValidator(dateStr, timeStr) {
@@ -21,11 +21,7 @@ export function futureTimeValidator(dateStr, timeStr) {
 export function notTuesdayValidator(dateStr) {
   const dateArr = dateStr.split("-");
 
-  let day = new Date(
-    dateArr[0],
-    dateArr[1] - 1,
-    dateArr[2]
-  ).getDay();
-  
-  return (day === 2);
+  let day = new Date(dateArr[0], dateArr[1] - 1, dateArr[2]).getDay();
+
+  return day === 2;
 }

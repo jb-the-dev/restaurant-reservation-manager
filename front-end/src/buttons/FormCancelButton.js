@@ -1,13 +1,15 @@
-import { useHistory } from "react-router"
+import { useHistory } from "react-router";
 
 export default function FormCancelButton() {
-const history = useHistory();
+  const history = useHistory();
 
-    return (
-        <button 
-            type="button" 
-            className="btn btn-danger mt-2"
-            onClick={() => history.goBack()}
-        >Cancel</button>
-    )
+  return (
+    <button
+      type="button"
+      className="btn btn-danger mt-2"
+      onClick={() => history.goBack()}
+    >
+      Cancel
+    </button>
+  );
 }
