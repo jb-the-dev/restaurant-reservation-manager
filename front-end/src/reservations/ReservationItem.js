@@ -9,7 +9,7 @@ export default function ReservationItem({
   handleSeat,
 }) {
   return (
-    <div className="card opacity-layer m-2" key={reservation.reservation_id}>
+    <div className="card opacity-layer m-2">
       <p className="reservation-name">
         {reservation.first_name} {reservation.last_name}
       </p>

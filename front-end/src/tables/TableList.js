@@ -49,7 +49,7 @@ export default function TableList() {
             </tr>
           </thead>
           <tbody>
-            {tables.length === 0 ? "Loading list of tables..." : tablesList}
+            {tablesList}
           </tbody>
         </table>
       </div>
